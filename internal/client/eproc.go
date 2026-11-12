@@ -21,7 +21,7 @@ type EProcClient struct {
 	browserManager browser.ContextManager
 }
 
-var _ Service = (*EProcClient)(nil)
+// var _ Service = (*EProcClient)(nil)
 var _ tribunal.Driver = (*EProcClient)(nil)
 
 // NewClient cria uma nova instância do driver do eProc TJSC.

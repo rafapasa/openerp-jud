@@ -112,4 +112,3 @@ func (h *DefaultToolHandler) HandleBaixarPeca(ctx context.Context, trib model.Tr
 
 	return driver.BaixarPeca(ctx, numeroProcesso, docID, h.cfg.DownloadsDir)
 }
-

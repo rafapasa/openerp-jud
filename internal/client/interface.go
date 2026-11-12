@@ -1,18 +1,6 @@
 package client
 
-import (
-	"context"
-
-	"github.com/rafapasa/openerp-jud/internal/model"
-)
-
-// Service define o contrato de alto nível para operações nos tribunais (eProc TJSC, Projudi TJPR).
-type Service interface {
-	Tribunal() model.Tribunal
-	ConsultarPorCPF(ctx context.Context, cpf string) ([]model.Processo, error)
-	ObterProcesso(ctx context.Context, numeroCNJ string) (*model.Processo, error)
-	BaixarPeca(ctx context.Context, numeroCNJ, docID, destino string) (string, error)
-}
+import "github.com/rafapasa/openerp-jud/internal/model"
 
 // HTMLParser define as operações de extração e conversão de dados do HTML do eProc.
 // Permite testes unitários de parser com snapshots HTML puros, sem necessitar do navegador.

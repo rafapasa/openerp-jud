@@ -26,9 +26,9 @@ func NewEProcParser() *EProcParser {
 // ParseTabelaProcessos extrai os processos a partir da tabela de resultados de consulta pública/CPF do eProc.
 // (Stub vazio para o ciclo TDD: implemente a lógica para fazer o teste passar!)
 func (p *EProcParser) ParseTabelaProcessos(html string) ([]model.Processo, error) {
-	doc, err := p.getHTMLDoc(html)
+	doc, err := GetHTMLDoc(html)
 	if err != nil {
-		return nil, apperror.NewInternalError("Erro ao parsear documento html", nil)
+		return nil, apperror.NewInternalError("Erro ao parsear documento html", err)
 	}
 
 	processos := make([]model.Processo, 0)
@@ -54,19 +54,10 @@ func (p *EProcParser) ParseTabelaProcessos(html string) ([]model.Processo, error
 	return processos, nil
 }
 
-func (*EProcParser) getHTMLDoc(html string) (*goquery.Document, error) {
-	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
-	if err != nil {
-		logger.LogError("Erro parse documento html", zap.Any("ERROR", err))
-		return nil, err
-	}
-	return doc, nil
-}
-
 // ParseCapaProcesso extrai os metadados principais da capa de um processo no eProc.
 // (Stub vazio para o ciclo TDD)
 func (p *EProcParser) ParseCapaProcesso(html string) (*model.Processo, error) {
-	doc, err := p.getHTMLDoc(html)
+	doc, err := GetHTMLDoc(html)
 	if err != nil {
 		return nil, apperror.NewInternalError("Erro ao parsear documento html", nil)
 	}
@@ -110,12 +101,12 @@ func (p *EProcParser) ParseCapaProcesso(html string) (*model.Processo, error) {
 // (Stub vazio para o ciclo TDD)
 func (p *EProcParser) ParseDocumentosProcesso(html string) ([]model.Documento, error) {
 	// TODO: Seu código entra aqui!
-	doc, err := p.getHTMLDoc(html)
+	doc, err := GetHTMLDoc(html)
 	if err != nil {
 		return nil, apperror.NewInternalError("Erro ao parsear documento html", nil)
 	}
 
-	var documentos []model.Documento
+	documentos := make([]model.Documento, 0)
 	doc.Find("table#tblEventos tbody tr").Each(func(i int, s *goquery.Selection) {
 		tds := s.Find("td")
 		if tds.Length() < 3 {
@@ -132,13 +123,16 @@ func (p *EProcParser) ParseDocumentosProcesso(html string) ([]model.Documento, e
 				return
 			}
 			id = u.Query().Get("id_documento")
+			if id == "" {
+				logger.LogError("Falha ao localizar ID", zap.String("URL", href), zap.Any("ERROR", err))
+				return
+			}
 		}
 		documento.ID = id
 		documento.Descricao = strings.TrimSpace(tds.Eq(1).Text())
 		documento.Nome = strings.TrimSpace(tds.Eq(2).Find("a").Text())
-		if documento.ID != "" {
-			documentos = append(documentos, documento)
-		}
+
+		documentos = append(documentos, documento)
 
 	})
 	return documentos, nil

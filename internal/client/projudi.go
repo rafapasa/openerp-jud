@@ -21,7 +21,7 @@ type ProjudiClient struct {
 	browserManager browser.ContextManager
 }
 
-var _ Service = (*ProjudiClient)(nil)
+// var _ Service = (*ProjudiClient)(nil)
 var _ tribunal.Driver = (*ProjudiClient)(nil)
 
 // NewClient cria uma nova instância do driver do Projudi TJPR.
