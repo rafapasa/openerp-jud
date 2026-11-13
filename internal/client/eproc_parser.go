@@ -112,8 +112,6 @@ func (p *EProcParser) ParseDocumentosProcesso(html string) ([]model.Documento, e
 		if tds.Length() < 3 {
 			return
 		}
-		var documento model.Documento
-
 		id := tds.Eq(2).Find("a").AttrOr("data-id", "")
 		if id == "" {
 			href, _ := tds.Eq(2).Find("a").Attr("href")
@@ -128,6 +126,7 @@ func (p *EProcParser) ParseDocumentosProcesso(html string) ([]model.Documento, e
 				return
 			}
 		}
+		var documento model.Documento
 		documento.ID = id
 		documento.Descricao = strings.TrimSpace(tds.Eq(1).Text())
 		documento.Nome = strings.TrimSpace(tds.Eq(2).Find("a").Text())

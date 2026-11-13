@@ -104,7 +104,6 @@ func (p *ProJudiParser) ParseDocumentosProcesso(html string) ([]model.Documento,
 			logger.LogError("Erro ao parsear tabela de documentos", zap.Any("HTML", s.Text()))
 			return
 		}
-		var documento model.Documento
 
 		id := tds.Eq(2).Find("a").AttrOr("data-id", "")
 		if id == "" {
@@ -120,6 +119,7 @@ func (p *ProJudiParser) ParseDocumentosProcesso(html string) ([]model.Documento,
 				return
 			}
 		}
+		var documento model.Documento
 		documento.ID = id
 		documento.Descricao = strings.TrimSpace(tds.Eq(1).Text())
 		documento.Nome = strings.TrimSpace(tds.Eq(2).Text())
