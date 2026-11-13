@@ -125,6 +125,8 @@ func (p *ProJudiParser) ParseDocumentosProcesso(html string) ([]model.Documento,
 			return
 		}
 
+		descricao := strings.TrimSpace(tds.Eq(1).Text())
+
 		tds.Eq(2).Find("a").Each(func(j int, a *goquery.Selection) {
 			id := strings.TrimSpace(a.AttrOr("data-id", ""))
 			if id == "" {
@@ -147,12 +149,14 @@ func (p *ProJudiParser) ParseDocumentosProcesso(html string) ([]model.Documento,
 				)
 				return
 			}
-		}
-		var documento model.Documento
-		documento.ID = id
-		documento.Descricao = strings.TrimSpace(tds.Eq(1).Text())
-		documento.Nome = strings.TrimSpace(tds.Eq(2).Text())
-		documentos = append(documentos, documento)
+
+			var documento model.Documento
+			documento.ID = id
+			documento.Descricao = descricao
+			documento.Nome = strings.TrimSpace(a.Text())
+
+			documentos = append(documentos, documento)
+		})
 	})
 
 	return documentos, nil
