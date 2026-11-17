@@ -10,212 +10,273 @@ import (
 )
 
 // ============================================================
-// FIXTURES — ProJudi TJSC (mock estrutural)
-// Ajustar seletores conforme HTML real da implantação alvo.
+// FIXTURES — Projudi TJPR
+//
+// Baseadas na estrutura REAL confirmada em:
+//   testdata/projudi/código fonte frame projudi.html  (sessão autenticada)
+//
+// Padrões reais observados:
+//   - Layout em <table> (sem Bootstrap)
+//   - Tabelas de dados: table.form
+//   - Rótulo: td.label > label
+//   - Valor: td (sem classe) ou td.value
+//   - Linhas alternadas: tr.odd / tr.even
+//   - Conteúdo dentro do frame "mainFrame" (frameset)
+//
+// ATENÇÃO: os DADOS (números de processo, nomes, valores) são fictícios.
+// A ESTRUTURA é real. Quando houver captura da lista/capa/movimentações
+// reais, estes fixtures devem ser substituídos pelos arquivos capturados.
 // ============================================================
 
-// Fixture 1: Tabela de resultados de busca por CPF no ProJudi.
-// ProJudi costuma usar tabelas com classe "table" ou "tabelaLista".
+// Fixture 1: Tabela de resultados de busca por CPF no Projudi.
 const htmlProjudiTabelaProcessosMock = `
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <body>
-<table id="tabelaProcessos" class="table table-striped">
+<div id="content">
+  <table class="form" id="tabelaProcessos">
     <thead>
-        <tr>
-            <th>Número do Processo</th>
-            <th>Classe</th>
-            <th>Vara / Comarca</th>
-            <th>Situação</th>
-        </tr>
+      <tr>
+        <th>Número do Processo</th>
+        <th>Classe</th>
+        <th>Vara / Comarca</th>
+        <th>Situação</th>
+      </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>
-                <a href="/projudi/processo.do?numero=50012345620268240001">
-                    5001234-56.2026.8.24.0001
-                </a>
-            </td>
-            <td>Procedimento Comum Cível</td>
-            <td>1ª Vara Cível - Florianópolis</td>
-            <td>Em andamento</td>
-        </tr>
-        <tr>
-            <td>
-                <a href="/projudi/processo.do?numero=50098761220258240038">
-                    5009876-12.2025.8.24.0038
-                </a>
-            </td>
-            <td>Execução de Título Extrajudicial</td>
-            <td>2ª Vara Cível - Joinville</td>
-            <td>Baixado</td>
-        </tr>
+      <tr class="odd">
+        <td>
+          <a href="/projudi/processo/processo.do?numero=50012345620268240001">5001234-56.2026.8.24.0001</a>
+        </td>
+        <td>Procedimento Comum Cível</td>
+        <td>1ª Vara Cível - Florianópolis</td>
+        <td>Em andamento</td>
+      </tr>
+      <tr class="even">
+        <td>
+          <a href="/projudi/processo/processo.do?numero=50098761220258240038">5009876-12.2025.8.24.0038</a>
+        </td>
+        <td>Execução de Título Extrajudicial</td>
+        <td>2ª Vara Cível - Joinville</td>
+        <td>Baixado</td>
+      </tr>
     </tbody>
-</table>
+  </table>
+</div>
 </body>
 </html>
 `
 
-// Fixture 2: Busca sem resultados no ProJudi.
+// Fixture 2: Busca sem resultados no Projudi.
 const htmlProjudiTabelaVaziaMock = `
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <body>
-<div class="alert alert-warning">
+<div id="content">
+  <div class="alert alert-warning">
     Nenhum processo encontrado para os critérios informados.
+  </div>
 </div>
 </body>
 </html>
 `
 
-// Fixture 3: Capa do processo no ProJudi.
-// ProJudi frequentemente usa <div class="form-group"> com <label> + <span>.
+// Fixture 3: Capa do processo no Projudi.
+// Estrutura baseada em table.form com td.label + td de valor.
 const htmlProjudiCapaProcessoMock = `
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <body>
-<div id="conteudoProcesso">
-    <h2 id="numeroProcesso">5001234-56.2026.8.24.0001</h2>
+<div id="content">
+  <h3>Dados do Processo</h3>
+  <table class="form" id="tabelaCapa">
+    <tr>
+      <td class="label"><label>Número Único:</label></td>
+      <td class="value"><strong>5001234-56.2026.8.24.0001</strong></td>
+      <td class="label"><label>Distribuição:</label></td>
+      <td class="value">10/03/2026 às 09:15:22</td>
+    </tr>
+    <tr>
+      <td class="label"><label>Classe Processual:</label></td>
+      <td class="value">Procedimento Comum Cível</td>
+      <td class="label"><label>Assunto Principal:</label></td>
+      <td class="value">Indenização por Dano Material</td>
+    </tr>
+    <tr>
+      <td class="label"><label>Vara / Juízo:</label></td>
+      <td class="value">1ª Vara Cível</td>
+      <td class="label"><label>Valor da Causa:</label></td>
+      <td class="value">R$ 45.000,00</td>
+    </tr>
+    <tr>
+      <td class="label"><label>Comarca:</label></td>
+      <td class="value">Florianópolis</td>
+      <td class="label"><label>Situação:</label></td>
+      <td class="value">Ativo</td>
+    </tr>
+  </table>
 
-    <div class="form-group">
-        <label>Classe:</label>
-        <span id="classeProcesso">Procedimento Comum Cível</span>
-    </div>
-    <div class="form-group">
-        <label>Comarca:</label>
-        <span id="comarcaProcesso">Florianópolis</span>
-    </div>
-    <div class="form-group">
-        <label>Vara:</label>
-        <span id="varaProcesso">1ª Vara Cível</span>
-    </div>
-    <div class="form-group">
-        <label>Assunto:</label>
-        <span id="assuntoProcesso">Indenização por Dano Material</span>
-    </div>
-    <div class="form-group">
-        <label>Valor da Causa:</label>
-        <span id="valorCausaProcesso">R$ 45.000,00</span>
-    </div>
-    <div class="form-group">
-        <label>Situação:</label>
-        <span id="situacaoProcesso">Ativo</span>
-    </div>
-
-    <table id="tabelaPartes" class="table">
-        <thead><tr><th>Polo</th><th>Nome</th></tr></thead>
-        <tbody>
-            <tr>
-                <td>Ativo</td>
-                <td>João da Silva</td>
-            </tr>
-            <tr>
-                <td>Passivo</td>
-                <td>Seguradora Alfa S.A.</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-</body>
-</html>
-`
-
-// Fixture 3b: Capa com múltiplos divs (regressão do Bug 1 do eProc).
-const htmlProjudiCapaDivsAninhadosMock = `
-<!DOCTYPE html>
-<html>
-<body>
-<div id="conteudoProcesso">
-    <h2 id="numeroProcesso">5001234-56.2026.8.24.0001</h2>
-
-    <div class="form-group">
-        <label>Classe:</label>
-        <span id="classeProcesso">Procedimento Comum Cível</span>
-    </div>
-    <div class="form-group">
-        <label>Valor da Causa:</label>
-        <span id="valorCausaProcesso">R$ 45.000,00</span>
-    </div>
-
-    <div class="sidebar-extra">
-        <span id="classeProcesso">CLASSE ERRADA QUE NAO DEVE SER LIDA</span>
-        <span id="valorCausaProcesso">R$ 999.999,99</span>
-    </div>
-</div>
-</body>
-</html>
-`
-
-// Fixture 3c: Capa sem valor da causa.
-const htmlProjudiCapaSemValorMock = `
-<!DOCTYPE html>
-<html>
-<body>
-<div id="conteudoProcesso">
-    <h2 id="numeroProcesso">5001234-56.2026.8.24.0001</h2>
-    <div class="form-group">
-        <label>Classe:</label>
-        <span id="classeProcesso">Procedimento Comum Cível</span>
-    </div>
-</div>
-</body>
-</html>
-`
-
-// Fixture 4: Tabela de eventos/documentos do ProJudi.
-const htmlProjudiEventosDocumentosMock = `
-<!DOCTYPE html>
-<html>
-<body>
-<table id="tabelaEventos" class="table">
+  <h4>Partes do Processo</h4>
+  <table class="resultTable" id="tabelaPartes">
     <thead>
-        <tr>
-            <th>Evento</th>
-            <th>Descrição</th>
-            <th>Documentos</th>
-        </tr>
+      <tr>
+        <th>Polo</th>
+        <th>Nome</th>
+        <th>Documento</th>
+        <th>Advogado(s)</th>
+      </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Petição Inicial</td>
-            <td>
-                <a href="/projudi/documento.do?id=doc101" data-id="doc101">
-                    PETICAO1.pdf
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Despacho</td>
-            <td>
-                <a href="/projudi/documento.do?id=doc102" data-id="doc102">
-                    DESP1.pdf
-                </a>
-            </td>
-        </tr>
+      <tr class="odd">
+        <td>Ativo</td>
+        <td>João da Silva</td>
+        <td>111.222.333-44</td>
+        <td>DR. BELTRANO (OAB/PR 54321)</td>
+      </tr>
+      <tr class="even">
+        <td>Passivo</td>
+        <td>Seguradora Alfa S.A.</td>
+        <td>12.345.678/0001-99</td>
+        <td>-</td>
+      </tr>
     </tbody>
-</table>
+  </table>
+</div>
 </body>
 </html>
 `
 
-// Fixture 4b: Documentos sem data-id, apenas href com id.
-const htmlProjudiDocumentosSemDataIDMock = `
+// Fixture 3b: Capa com múltiplas tabelas .form.
+// O parser DEVE ler apenas a tabela de capa (#tabelaCapa) e ignorar as demais.
+const htmlProjudiCapaDivsAninhadosMock = `
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <body>
-<table id="tabelaEventos" class="table">
+<div id="content">
+  <table class="form" id="tabelaCapa">
+    <tr>
+      <td class="label"><label>Número Único:</label></td>
+      <td class="value"><strong>5001234-56.2026.8.24.0001</strong></td>
+    </tr>
+    <tr>
+      <td class="label"><label>Classe Processual:</label></td>
+      <td class="value">Procedimento Comum Cível</td>
+    </tr>
+    <tr>
+      <td class="label"><label>Valor da Causa:</label></td>
+      <td class="value">R$ 45.000,00</td>
+    </tr>
+  </table>
+
+  <table class="form" id="tabelaOutroBloco">
+    <tr>
+      <td class="label"><label>Classe Processual:</label></td>
+      <td class="value">CLASSE ERRADA QUE NAO DEVE SER LIDA</td>
+    </tr>
+    <tr>
+      <td class="label"><label>Valor da Causa:</label></td>
+      <td class="value">R$ 999.999,99</td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
+`
+
+// Fixture 3c: Capa sem a célula de valor da causa.
+const htmlProjudiCapaSemValorMock = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<body>
+<div id="content">
+  <table class="form" id="tabelaCapa">
+    <tr>
+      <td class="label"><label>Número Único:</label></td>
+      <td class="value"><strong>5001234-56.2026.8.24.0001</strong></td>
+    </tr>
+    <tr>
+      <td class="label"><label>Classe Processual:</label></td>
+      <td class="value">Procedimento Comum Cível</td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
+`
+
+// Fixture 4: Tabela de movimentações/documentos do Projudi.
+const htmlProjudiEventosDocumentosMock = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<body>
+<div id="content">
+  <h4>Movimentações</h4>
+  <table class="resultTable" id="tabelaMovimentacoes">
+    <thead>
+      <tr>
+        <th>Seq.</th>
+        <th>Data</th>
+        <th>Movimentação</th>
+        <th>Arquivos</th>
+      </tr>
+    </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Petição Inicial</td>
-            <td>
-                <a href="/projudi/documento.do?id=doc201">PETICAO1.pdf</a>
-            </td>
-        </tr>
+      <tr class="odd">
+        <td>2</td>
+        <td>12/03/2026 11:00</td>
+        <td>Proferido despacho de mero expediente</td>
+        <td>
+          <ul class="arquivos">
+            <li><a href="/projudi/processo/arquivo.do?id=doc101&hash=a1b2c3d4">Despacho.pdf</a></li>
+          </ul>
+        </td>
+      </tr>
+      <tr class="even">
+        <td>1</td>
+        <td>10/03/2026 09:15</td>
+        <td>Distribuído por sorteio</td>
+        <td>
+          <ul class="arquivos">
+            <li><a href="/projudi/processo/arquivo.do?id=doc102&hash=e5f6g7h8">Peticao_Inicial.pdf</a></li>
+          </ul>
+        </td>
+      </tr>
     </tbody>
-</table>
+  </table>
+</div>
+</body>
+</html>
+`
+
+// Fixture 4b: Documentos com data-id explícito.
+const htmlProjudiDocumentosComDataIDMock = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<body>
+<div id="content">
+  <table class="resultTable" id="tabelaMovimentacoes">
+    <thead>
+      <tr>
+        <th>Seq.</th>
+        <th>Data</th>
+        <th>Movimentação</th>
+        <th>Arquivos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="odd">
+        <td>1</td>
+        <td>10/03/2026 09:15</td>
+        <td>Distribuído por sorteio</td>
+        <td>
+          <ul class="arquivos">
+            <li><a data-id="doc201" href="/projudi/processo/arquivo.do?id=doc201">Peticao_Inicial.pdf</a></li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 </body>
 </html>
 `
@@ -223,32 +284,39 @@ const htmlProjudiDocumentosSemDataIDMock = `
 // Fixture 4c: Documento sem ID identificável.
 const htmlProjudiDocumentoSemIDMock = `
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <body>
-<table id="tabelaEventos" class="table">
+<div id="content">
+  <table class="resultTable" id="tabelaMovimentacoes">
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Petição Inicial</td>
-            <td>
-                <a href="/projudi/outra_acao">PETICAO1.pdf</a>
-            </td>
-        </tr>
+      <tr class="odd">
+        <td>1</td>
+        <td>10/03/2026 09:15</td>
+        <td>Distribuído por sorteio</td>
+        <td>
+          <ul class="arquivos">
+            <li><a href="/projudi/outra_acao">Peticao_Inicial.pdf</a></li>
+          </ul>
+        </td>
+      </tr>
     </tbody>
-</table>
+  </table>
+</div>
 </body>
 </html>
 `
 
-// Fixture 4d: Tabela de eventos vazia.
+// Fixture 4d: Tabela de movimentações vazia.
 const htmlProjudiEventosVazioMock = `
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <body>
-<table id="tabelaEventos" class="table">
-    <thead><tr><th>Evento</th><th>Descrição</th><th>Documentos</th></tr></thead>
+<div id="content">
+  <table class="resultTable" id="tabelaMovimentacoes">
+    <thead><tr><th>Seq.</th><th>Data</th><th>Movimentação</th><th>Arquivos</th></tr></thead>
     <tbody></tbody>
-</table>
+  </table>
+</div>
 </body>
 </html>
 `
@@ -329,7 +397,7 @@ func TestProjudiParser_ParseCapaProcesso_Sucesso(t *testing.T) {
 	assert.Equal(t, "Passivo", proc.Partes[1].Polo)
 }
 
-func TestProjudiParser_ParseCapaProcesso_DivsAninhados(t *testing.T) {
+func TestProjudiParser_ParseCapaProcesso_BlocosAninhados(t *testing.T) {
 	parser := client.NewProjudiParser()
 
 	proc, err := parser.ParseCapaProcesso(htmlProjudiCapaDivsAninhadosMock)
@@ -337,11 +405,11 @@ func TestProjudiParser_ParseCapaProcesso_DivsAninhados(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, proc)
 
-	// Deve ler SOMENTE de div.form-group, ignorando div.sidebar-extra
+	// Deve ler SOMENTE de #tabelaCapa, ignorando #tabelaOutroBloco
 	assert.Equal(t, "Procedimento Comum Cível", proc.Classe,
-		"deve ignorar o div extra e ler apenas os form-groups da capa")
+		"deve ignorar a tabela extra e ler apenas #tabelaCapa")
 	assert.Equal(t, 45000.0, proc.ValorCausa,
-		"deve ignorar o valor do div extra")
+		"deve ignorar o valor da tabela extra")
 }
 
 func TestProjudiParser_ParseCapaProcesso_ValorCausaAusente(t *testing.T) {
@@ -352,7 +420,7 @@ func TestProjudiParser_ParseCapaProcesso_ValorCausaAusente(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, proc)
 	assert.Equal(t, 0.0, proc.ValorCausa,
-		"deve retornar 0 quando o span de valor da causa não existir")
+		"deve retornar 0 quando a célula de valor da causa não existir")
 	assert.Equal(t, "5001234-56.2026.8.24.0001", proc.NumeroCNJ)
 	assert.Equal(t, "Procedimento Comum Cível", proc.Classe)
 }
@@ -367,27 +435,26 @@ func TestProjudiParser_ParseDocumentosProcesso_Sucesso(t *testing.T) {
 	docs, err := parser.ParseDocumentosProcesso(htmlProjudiEventosDocumentosMock)
 
 	require.NoError(t, err)
-	require.Len(t, docs, 2, "deve extrair 2 documentos da árvore de eventos")
+	require.Len(t, docs, 2, "deve extrair 2 documentos da tabela de movimentações")
 
-	assert.Equal(t, "doc101", docs[0].ID)
-	assert.Equal(t, "PETICAO1.pdf", docs[0].Nome)
-	assert.Equal(t, "Petição Inicial", docs[0].Descricao)
+	assert.Equal(t, "doc101", docs[0].ID, "deve extrair o parâmetro id= do href")
+	assert.Equal(t, "Despacho.pdf", docs[0].Nome)
+	assert.Equal(t, "Proferido despacho de mero expediente", docs[0].Descricao)
 
 	assert.Equal(t, "doc102", docs[1].ID)
-	assert.Equal(t, "DESP1.pdf", docs[1].Nome)
-	assert.Equal(t, "Despacho", docs[1].Descricao)
+	assert.Equal(t, "Peticao_Inicial.pdf", docs[1].Nome)
+	assert.Equal(t, "Distribuído por sorteio", docs[1].Descricao)
 }
 
-func TestProjudiParser_ParseDocumentosProcesso_FallbackHref(t *testing.T) {
+func TestProjudiParser_ParseDocumentosProcesso_DataID(t *testing.T) {
 	parser := client.NewProjudiParser()
 
-	docs, err := parser.ParseDocumentosProcesso(htmlProjudiDocumentosSemDataIDMock)
+	docs, err := parser.ParseDocumentosProcesso(htmlProjudiDocumentosComDataIDMock)
 
 	require.NoError(t, err)
-	require.Len(t, docs, 1, "deve extrair documento usando fallback de href")
-	assert.Equal(t, "doc201", docs[0].ID,
-		"deve extrair id do href quando data-id estiver ausente")
-	assert.Equal(t, "PETICAO1.pdf", docs[0].Nome)
+	require.Len(t, docs, 1)
+	assert.Equal(t, "doc201", docs[0].ID, "data-id tem precedência sobre o href")
+	assert.Equal(t, "Peticao_Inicial.pdf", docs[0].Nome)
 }
 
 func TestProjudiParser_ParseDocumentosProcesso_SemID(t *testing.T) {
@@ -395,7 +462,6 @@ func TestProjudiParser_ParseDocumentosProcesso_SemID(t *testing.T) {
 
 	docs, err := parser.ParseDocumentosProcesso(htmlProjudiDocumentoSemIDMock)
 
-	// Mesmo contrato do eProc: documento sem ID identificável deve ser descartado.
 	require.NoError(t, err)
 	assert.Empty(t, docs,
 		"documento sem ID identificável deve ser descartado, não incluído com ID vazio")

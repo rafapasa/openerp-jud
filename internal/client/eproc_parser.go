@@ -17,6 +17,7 @@ type EProcParser struct {
 }
 
 var _ HTMLParser = (*EProcParser)(nil)
+var _ FormParser = (*EProcParser)(nil)
 
 // NewEProcParser instancia um novo parser para o eProc TJSC.
 func NewEProcParser() *EProcParser {
@@ -135,4 +136,74 @@ func (p *EProcParser) ParseDocumentosProcesso(html string) ([]model.Documento, e
 
 	})
 	return documentos, nil
+}
+
+// ParseFormularioConsulta extrai os seletores e metadados do formulário de consulta do eProc.
+//
+// Baseado no HTML real capturado em:
+// testdata/eproc/public/form_consulta_publica_fragment.html
+//
+// Seletores confirmados:
+//   - form#frmProcessoLista (method=post)
+//   - input#txtNumProcesso    → CampoNumeroProcesso
+//   - input#txtStrParte       → CampoNomeParte
+//   - input#txtCpfCnpj        → CampoDocumento
+//   - input#txtStrOAB         → CampoOAB
+//   - input#rdoPessoaFisica   → RadioPessoaFisica
+//   - input#rdoPessoaJuridica → RadioPessoaJuridica
+//   - button#sbmNovo          → BotaoSubmit
+//   - div.cf-turnstile[data-sitekey] → PossuiCaptcha + CaptchaSiteKey
+//
+// Retorna (nil, nil) quando a página não contém o formulário de consulta.
+func (p *EProcParser) ParseFormularioConsulta(html string) (*model.FormularioConsulta, error) {
+	doc, err := GetHTMLDoc(html)
+	if err != nil {
+		return nil, apperror.NewInternalError("Erro ao parsear documento html", err)
+	}
+
+	formSel := doc.Find("form#frmProcessoLista").First()
+	if formSel.Length() == 0 {
+		return nil, nil
+	}
+
+	form := &model.FormularioConsulta{
+		Action: strings.TrimSpace(formSel.AttrOr("action", "")),
+		Method: strings.ToLower(strings.TrimSpace(formSel.AttrOr("method", ""))),
+	}
+
+	// Seletores dos campos de entrada — só preenche quando o elemento existe.
+	if formSel.Find("input#txtNumProcesso").Length() > 0 {
+		form.CampoNumeroProcesso = "#txtNumProcesso"
+	}
+	if formSel.Find("input#txtStrParte").Length() > 0 {
+		form.CampoNomeParte = "#txtStrParte"
+	}
+	if formSel.Find("input#txtCpfCnpj").Length() > 0 {
+		form.CampoDocumento = "#txtCpfCnpj"
+	}
+	if formSel.Find("input#txtStrOAB").Length() > 0 {
+		form.CampoOAB = "#txtStrOAB"
+	}
+
+	// Radios de tipo de documento.
+	if formSel.Find("input#rdoPessoaFisica").Length() > 0 {
+		form.RadioPessoaFisica = "#rdoPessoaFisica"
+	}
+	if formSel.Find("input#rdoPessoaJuridica").Length() > 0 {
+		form.RadioPessoaJuridica = "#rdoPessoaJuridica"
+	}
+
+	// Botão de submissão.
+	if formSel.Find("button#sbmNovo").Length() > 0 {
+		form.BotaoSubmit = "#sbmNovo"
+	}
+
+	// Captcha — Cloudflare Turnstile.
+	turnstile := doc.Find("div.cf-turnstile").First()
+	if turnstile.Length() > 0 {
+		form.PossuiCaptcha = true
+		form.CaptchaSiteKey = strings.TrimSpace(turnstile.AttrOr("data-sitekey", ""))
+	}
+
+	return form, nil
 }

@@ -1,0 +1,1187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt" lang="BR">
+	<head>
+		
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+<meta http-equiv="Cache-Control" content="no-store,no-cache,must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="-1"/>
+
+<link rel="icon" href="favicon.ico"/>
+		
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/projudi/css/select2/select2.css?updateIdx=197"/>
+
+
+
+<link rel="stylesheet" type="text/css" href="/projudi/css/layout.css?updateIdx=197_2_7"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/typo.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/menu.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/ajaxtags.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/assinatura_servidor.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/themes/olive.css?updateIdx=197g"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/opentip.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/contextHelp.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/postLogon/perfisAtivos.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/postLogon/assessorado.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/postLogon/areaAtuacao.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/metasCNJ.css?updateIdx=197"/>
+
+
+<link rel="stylesheet" type="text/css" href="/projudi/css/window/default.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" href="/projudi/css/window/tjpr.css?updateIdx=197"/>
+<link rel="stylesheet" type="text/css" media="print" href="/projudi/css/print.css?updateIdx=197"/>
+
+
+ 
+
+
+		
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript" src="/projudi/js/prototype.js?updateIdx=261"></script>	
+
+
+
+<script type="text/javascript" src="/projudi/js/window/window.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/window/effects.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/opentip-native.min.js?updateIdx=261"></script>
+
+
+<script type="text/javascript" src="/projudi/js/jquery/jquery-3.2.1.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/select2/select2-4.0.13.js?updateIdx=261"></script>
+<script type="text/javascript">
+var $jq = jQuery.noConflict(true);
+$jq(document).ready(function($){
+	$('.projudi_select2').select2();
+
+	//Código para bloquear o acesso caso o select esteja com o atributo readOnly setado
+	$('select[data-select2-id]').on('select2:opening', function (e) {
+		if( this.readOnly ) {
+			e.preventDefault();
+			$(this).select2('close');
+			return false;
+		}
+	});
+});
+
+
+</script>
+
+
+<script type="text/javascript" src="/projudi/js/overlibmws/overlibmws.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/overlibmws/overlibmws_crossframe.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/overlibmws/overlibmws_iframe.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/overlibmws/overlibmws_hide.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/overlibmws/overlibmws_shadow.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/scriptaculous/scriptaculous.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/scriptaculous/dragdrop.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/ajax/ajaxtags.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/ajax/ajaxtags_controls.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/ajax/ajaxtags_parser.js?updateIdx=261"></script>
+
+
+<script type="text/javascript" src="/projudi/js/calendarpopup/CalendarPopup.js?updateIdx=261"></script>
+
+
+
+	<script type="text/javascript" src="/projudi/js/html-form-input-mask.js?updateIdx=261"></script>
+
+
+
+<script type="text/javascript" src="/projudi/js/tjpr.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/projudi.js?updateIdx=261_01"></script>
+<script type="text/javascript" src="/projudi/js/uploader.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/contextHelp.js?updateIdx=261"></script>
+<script type="text/javascript" src="/projudi/js/userManager.js?updateIdx=261a"></script>
+<script type="text/javascript" src="/projudi/js/userPreferences.js?updateIdx=261"></script>
+<script type="text/javascript" src='/projudi/js/postLogon/postLogon.js?updateIdx=261'></script>
+<script type="text/javascript" src='/projudi/js/postLogon/autocompleteJS.js?updateIdx=261'></script>
+<script type="text/javascript" src='/projudi/js/postLogon/perfil.js?updateIdx=261'></script>
+<script type="text/javascript" src='/projudi/js/postLogon/areaAtuacao.js?updateIdx=261'></script>
+<script type="text/javascript" src='/projudi/js/postLogon/assessorado.js?updateIdx=261'></script>
+<script type="text/javascript" src="/projudi/js/backURLManager.js?updateIdx=261"></script>
+<script type="text/javascript" charset="utf-8" src="/projudi/js/control-layout.js?updateIdx=261_o6"></script>
+<script type="text/javascript" src="/projudi/js/metasCNJ.js?updateIdx=261"></script>
+<script type="text/javascript" charset="utf-8" src="/projudi/js/criminal/criminal.js?updateIdx=261_d"></script>
+
+
+
+<script type="text/javascript">
+//   var $jq = jQuery.noConflict();
+  
+  diech9ohTie3(); 
+
+  // Application root path for JavaScript functions
+  var appRootPath = "/projudi/";
+
+  // Multiple onload function created by: Simon Willison
+  // http://simonwillison.net/2004/May/26/addLoadEvent/
+  function addLoadEvent(func) {
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function') {
+      window.onload = func;
+    } else {
+      window.onload = function() {
+        if (oldonload) {
+          oldonload();
+        }
+        func();
+      }
+    }
+  }
+  
+  addLoadEvent(function() {
+	// adds fields masks javascript listener
+	if(typeof Xaprb != 'undefined')
+		Xaprb.InputMask.setupElementMasks();
+
+    // adiciona contador de tempo para expirar a sessão
+    if( typeof(functionDisplaySessionTimeout) != 'undefined' )
+    	functionDisplaySessionTimeout();
+  });
+  
+  addLoadEvent(function(){
+	  var openTipInputs =  $$('.openTip');	  
+	  openTipInputs.each(function(input){
+			new Opentip(input, input.alt,{target: input, targetJoint: "bottom-right", fixed: true});
+		});	
+  });
+  
+  //teste
+  
+  var ie=document.all;
+      var ns6=document.getElementById&&!document.all;
+
+var horizontal_offset="9px" ;
+      var vertical_offset="0";
+
+function buscarPosicaoOffset(what, offsettype)
+      {
+        var totaloffset=(offsettype=="left")? what.offsetLeft : what.offsetTop;
+        var parentEl=what.offsetParent;
+        while (parentEl!=null)
+        {
+          totaloffset=(offsettype=="left")? totaloffset+parentEl.offsetLeft : totaloffset+parentEl.offsetTop;
+          parentEl=parentEl.offsetParent;
+        }
+        return totaloffset;
+      }
+
+function limparCantoBrowser(obj, whichedge)
+{
+        var edgeoffset=(whichedge=="rightedge")? parseInt(horizontal_offset)*-1 : parseInt(vertical_offset)*-1;
+        if (whichedge=="rightedge")
+        {
+               var windowedge=ie && !window.opera? ehCompativelIE().scrollLeft+ehCompativelIE().clientWidth-30 : window.pageXOffset+window.innerWidth-40;
+                dropmenuobj.contentmeasure=dropmenuobj.offsetWidth;
+               if (windowedge-dropmenuobj.x < dropmenuobj.contentmeasure)
+                       edgeoffset=dropmenuobj.contentmeasure+obj.offsetWidth+parseInt(horizontal_offset);
+        }
+        else
+        {
+               var windowedge=ie && !window.opera? ehCompativelIE().scrollTop+ehCompativelIE().clientHeight-15 : window.pageYOffset+window.innerHeight-18;
+                dropmenuobj.contentmeasure=dropmenuobj.offsetHeight;
+               if (windowedge-dropmenuobj.y < dropmenuobj.contentmeasure)
+                       edgeoffset=dropmenuobj.contentmeasure-obj.offsetHeight;
+        }
+        return edgeoffset;
+}
+
+function ehCompativelIE()
+      {
+        return (document.compatMode && document.compatMode!="BackCompat")? document.documentElement : document.body;
+      }
+
+  function mostrarHint(menucontents, obj, e, tipwidth)
+	{
+	if ((ie||ns6) && document.getElementById("caixaAjuda"))
+	{
+	dropmenuobj=document.getElementById("caixaAjuda");
+	dropmenuobj.innerHTML=menucontents;
+	dropmenuobj.style.left=dropmenuobj.style.top=-500;
+	if (tipwidth!="")
+	{
+	dropmenuobj.widthobj=dropmenuobj.style;
+	dropmenuobj.widthobj.width=tipwidth;
+	}
+	dropmenuobj.x=buscarPosicaoOffset(obj, "left");
+	dropmenuobj.y=buscarPosicaoOffset(obj, "top");
+	dropmenuobj.style.left=dropmenuobj.x-limparCantoBrowser(obj, "rightedge")+obj.offsetWidth+"px";
+	dropmenuobj.style.top=dropmenuobj.y-limparCantoBrowser(obj, "bottomedge")+"px";
+	dropmenuobj.style.visibility="visible";
+	obj.onmouseout=esconderDica;
+	}
+	}
+
+function esconderDica(e)
+	{
+	dropmenuobj.style.visibility="hidden";
+	dropmenuobj.style.left="-500px";
+	}
+	
+	function criarCaixaDica()
+	{
+		var divblock=document.createElement("div");
+		divblock.setAttribute("id", "caixaAjuda");
+		document.body.appendChild(divblock);
+		
+	}
+	
+	function criarDivGrafico(){
+		var divblock=document.createElement("div");
+		divblock.setAttribute("id", "divAjaxGraficoProjudi");
+		document.body.appendChild(divblock);
+	}
+	
+	if (window.addEventListener)
+	window.addEventListener("load", criarCaixaDica, false);
+	else if (window.attachEvent)
+	window.attachEvent("onload", criarCaixaDica);
+	else if (document.getElementById)
+	window.onload=criarCaixaDica;
+
+	//Cria link menu - acessibilidade permitindo retornar ao menu através da tecla Alt 2
+	var linkMenuCriado = false;
+	window.addEventListener('load', function() {
+		if(!linkMenuCriado) {
+			linkMenuCriado = true;
+			var link = document.createElement('A');
+			link.href="#";
+			link.onclick = function() { if(window.parent && window.parent.focusMenu) {window.parent.focusMenu();} return false; };
+			link.accessKey="2";
+			document.body.appendChild(link);
+		}
+	});
+</script>
+
+		<title>
+			
+				
+				
+				
+					Projudi - Processo Eletrônico do Judiciário do Paraná
+				
+					
+		</title>
+	</head>
+	
+	
+	<body onmousemove="onBodyMouseMove()" onkeydown="onBodyKeyDown()">
+		<div id="container">
+			
+			
+								
+				
+				 
+					
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var sessionTimeout = 60;
+	var serverdate = calcServerTime(new Date(1794920534119),3); 
+	var isSessionTimeoutAlertJS = false;
+
+	function renovaSessao() {
+		var xmlhttp;
+		if (window.XMLHttpRequest) {
+		  xmlhttp=new XMLHttpRequest();
+		} else {
+		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function() {
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			try {
+				eval('var result=' + xmlhttp.responseText);
+				sessionTimeout = 60;
+				serverdate = calcServerTime(result.time, result.timeZone);
+				displaySessionTime(sessionTimeout);
+				displayTime();
+				sessionTimeout = sessionTimeout - 1;
+				isSessionTimeoutAlertJS = false;
+			} catch(err) {
+			    openDialogSessaoExpirada();
+			}
+		  } else if(xmlhttp.readyState==4) {
+		    openDialogSessaoExpirada();
+		  }
+		};
+		xmlhttp.open('GET', '/projudi/timeout.do?_tj=dce4b5d37fcac17ef33593c168e2e191bb818ad4971789faa46c3be563276201', true);
+		xmlhttp.send();
+	}
+	
+	function calcServerTime(timeServidor, offset) {
+		dataServidor = new Date(timeServidor);
+	    utc = dataServidor.getTime() + (dataServidor.getTimezoneOffset() * 60000);
+	    nd  = new Date(utc - (3600000*offset));
+	    return nd;
+	}
+	
+	function padlength(what){
+		var output=(what.toString().length==1)? "0"+what : what;
+		return output;
+	}
+
+	function displayTime() {
+		var month=serverdate.getMonth()+1;
+		var day=serverdate.getDate();
+		var year=serverdate.getFullYear();
+		var timestring="<span class=\"userinfo_label\">Data:</span><span>&nbsp;"+padlength(day)+"/"+padlength(month)+"/"+padlength(year)+" "+padlength(serverdate.getHours())+":"+padlength(serverdate.getMinutes())+"</span>"
+		document.getElementById("serverTime").innerHTML = timestring;
+		serverdate.setMinutes(serverdate.getMinutes()+1);
+	}
+
+	function displaySessionTime(sTimeout){
+		document.getElementById('sessionField').innerHTML = '<span class="userinfo_label">Expira em:</span><span>&nbsp;'+sTimeout+' min</span>';
+		var isPopulacao = false;
+		if(sTimeout <= 5 && sTimeout > 0 && !isPopulacao && !isSessionTimeoutAlertJS){
+			//Calcula o tempo real, no caso de popup
+			isSessionTimeoutAlertJS = true;
+			openDialogRenovarSessao(sTimeout);
+		}
+	}
+	
+	var functionDisplaySessionTimeout = function() {
+		// se for grupo população, não exibe informação de "tempo de sessão"
+		var isPopulacao = false;
+		if( isPopulacao )
+			return;
+
+		//assigning minutes left to session timeout to Label
+		displaySessionTime(sessionTimeout);
+		sessionTimeout = sessionTimeout - 1;
+	    
+		//if session is not less than 0
+		if (sessionTimeout >= 0) {
+			displayTime();
+		} else {
+			//show message box
+			document.getElementById('sessionField').innerHTML = '<div><span class="userinfo_label">Expira em:</span><span>&nbsp;Sessão expirada</span>';
+		}
+		
+		//call the function again after 1 minute delay
+		window.setTimeout(functionDisplaySessionTimeout, 60000);
+	}
+	
+	function openDialogRenovarSessao(tempo) {
+		alert('Sua sessão irá expirar em menos de '+tempo+' minutos. Clique em \'OK\' para renová-la.');
+		renovaSessao();
+	}
+	
+	function openDialogSessaoExpirada() {
+		sessionTimeout = 0;
+		document.getElementById('sessionField').innerHTML = '<div><span class="userinfo_label">Expira em:</span><span>&nbsp;Sessão expirada</span>';
+		alert('Sua sessão expirou.');
+ 	}
+
+
+	/**
+	 * Abre o manual
+	 */
+	function abreManual(url) {
+		window.open(url,'janela','width=750,height=450,left=10,top=30,' +
+					'screenX=10,screenY=30,toolbar=yes,location=no,' + 
+					'directories=no,status=no,menubar=yes,scrollbars=yes,' +
+					'copyhistory=no,resizable=yes');
+	}
+	
+	/**
+	 * Abre a popup com o histórico dos processos/recursos recentemente visualizados
+	 */
+	function openDialogHistoricoProcessosRecursos(titulo) {
+		// abre a popup (sem encriptar a url)
+		var url = '/projudi/historicoProcessosRecursos.do?actionType=listar';
+		openDialog(url, titulo, 0, 0);
+	}
+	
+
+
+</script>
+
+
+<table id="userinfo" class="naoImprimir" cellpadding="0" cellspacing="0">
+
+	<tr>
+		
+		<td id="userinfo">
+			
+			
+				<div>
+					<span class="userinfo_label">Usuário:</span>
+					
+					<a id="meusdados" href="/projudi/usuario/usuario.do?_tj=dce4b5d37fcac17ee2989db967a8fd35c650aa5b32dd6dad36c10b64413abc90">BRUNO ABDIEL LAZZAROTTO</a>
+					<script  type="text/javascript">
+						meusdados = document.getElementById('meusdados');
+						new Opentip(meusdados, 'BRUNO ABDIEL LAZZAROTTO<br><br>Clique para visualizar seus dados',{target: meusdados, targetJoint: 'bottom-left', fixed: true});
+					</script>
+				</div>
+				<div class="group">
+					<span class="userinfo_label">Atribuição:</span>
+					<span title="Advogado (SC71455)">Advogado (SC71455)</span>
+					<a href="/projudi/userInfo.do?actionType=listLogins"  target="mainFrame">
+						<img src="/projudi/img/themes/olive/iUserProfiles.png" class="openTip" alt="Clique para alternar entre os perfis cadastrados para seu CPF/CNJP">
+					</a>
+				</div>
+				
+			
+			
+			
+
+			
+			<div id="serverTime"></div>
+			
+			
+			<div id="sessionField"></div>
+			
+			
+			
+
+			
+			
+
+				<div>
+					<span class="userinfo_label">Último Acesso:</span>
+
+					
+					<a id="lnkUltimosAcessos" href="/projudi/usuario/acessoUsuario.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4ee1d9aea6033f5c47"> 10/11/2026 às 10:33 </a>
+
+					<script  type="text/javascript">
+						lnkUltimosAcessos = document.getElementById('lnkUltimosAcessos');
+						new Opentip(lnkUltimosAcessos, 'Clique para visualizar seus últimos acessos',{target: lnkUltimosAcessos, targetJoint: 'bottom-left', fixed: true});
+					</script>
+				</div>
+			
+
+
+			
+			
+		</td>
+		
+		
+		<td id="shortcuts" width="1%" nowrap="nowrap">
+			
+				
+						
+		    	
+				<a id="history" href="javascript: openDialogHistoricoProcessosRecursos('');" title="" class="shortcuts">
+		    		Histórico
+		    	</a>
+		    	&nbsp;
+		    	
+		 		<a id="help"  href="#" onClick="abreManual('/projudi/informacoesExtras/manuais/DirecionaManual')" class="shortcuts" target="_self">
+		 			Ajuda 			
+		 		</a> 
+		    	&nbsp;
+	    	
+			<a id="close" href="/projudi/usuario/logon.do?actionType=logout&forcarLogout=true" class="shortcuts" target="mainFrame">
+	    		Sair
+			</a>		
+		</td>
+	</tr>
+
+	
+		
+
+	
+	
+
+	
+</table>
+<div id="historyNotification" class="historyNotification" style="display:none;"	
+	 onmouseover="hnFade.cancel(); Effect.Appear('historyNotification', { duration: 1.0 });" 
+	 onmouseleave="hnFade = Effect.Fade('historyNotification', { duration: 5.0 });">
+	
+</div>
+<script type="text/javascript">
+	if (''){
+		var rectM = document.getElementById('close').getBoundingClientRect();//posiciona sobre a barra de links                                     
+		var leftM,topM;
+		var scrollTopM = document.documentElement.scrollTop? document.documentElement.scrollTop:document.body.scrollTop;
+		var scrollLeftM = document.documentElement.scrollLeft? document.documentElement.scrollLeft:document.body.scrollLeft;
+		topM = 24+rectM.top+scrollTopM+'px';
+		leftM = rectM.left+scrollLeftM-24-290+'px';
+		$('historyNotification').style.top=topM; $('historyNotification').style.left=leftM;
+		var hnAppear = Effect.Appear('historyNotification', { duration: 2.0 });
+		var hnFade = Effect.Fade('historyNotification', { duration: 5.0 });
+	}
+</script>
+			
+			<hr/>
+			
+			<div id="content">
+				<div id="idCalPadrao" style="position:absolute;z-index:1000;float:right;visibility:hidden;background-color:white;layer-background-color:white;">
+				</div>
+				
+					
+						
+
+
+
+
+
+
+
+
+
+<input type="hidden" id="keycloakAuthServerUrl" value="https://sso.tjpr.jus.br/auth">
+<input type="hidden" id="keycloakTjprRealm" value="production">
+<input type="hidden" id="keycloakClientId" value="projudi-ui">
+
+<script type="text/javascript" src="https://sso.tjpr.jus.br/auth/js/keycloak.js"></script>
+<script type="text/javascript" src="/projudi/js/toastnotify/src/js/toastnotify.js?updateIdx=5"></script>
+<link rel="stylesheet" href="/projudi/js/toastnotify/src/css/toastnotify.css" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+
+	
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	/**
+	 * Função para limpar o conteúdo das mensagens
+	 */
+	function clearMessages(){
+		var successMsgs = document.getElementById('successMessages');
+		if(successMsgs != null && "" + successMsgs != "undefined"){
+			successMsgs.style.display="none";
+		}
+	}
+	
+	function getToastWindow() {
+		if(window.name == 'mainFrame') return window;
+		
+		var result = window;
+		while(result && result != result.parent) {
+			result = result.parent;
+			if(result && result.name == 'mainFrame') {
+				return result;
+			}
+		}
+		return window;
+	}
+	
+	addLoadEvent(function(){
+		var toastMessage = '';
+		if (toastMessage != null && toastMessage != "") {
+			
+			getToastWindow().MensagemAlerta(toastMessage);
+		}
+		
+		toastMessage = '';
+		if (toastMessage != null && toastMessage != "") {
+			
+			getToastWindow().MensagemEvento(toastMessage);
+		}
+		
+		toastMessage = '';
+		if (toastMessage != null && toastMessage != "") {
+			
+			getToastWindow().MensagemErro(toastMessage);
+		}
+		
+	});
+	
+	// chama a função após 4 segundos
+	var flagfixedSuccessMessage = "";
+	if( (flagfixedSuccessMessage == "") || !flagfixedSuccessMessage ) {
+		window.setTimeout("clearMessages()", 4000);
+	}
+</script>
+						
+
+
+
+
+
+
+
+
+<form name="mesaAdvogadoForm" id="mesaAdvogadoForm" method="post" action="/projudi/usuario/mesaAdvogado.do?actionType=listaInicio">
+	<input type="hidden" name="selectedIcon" value="tabProcessos">
+	
+	
+	<h3>
+		Mesa do(a) Advogado Particular/Sociedade de Advogados
+	</h3>
+	
+	
+	
+		&nbsp;&nbsp;
+		<a href="/projudi/util/caixaMensagens.do?actionType=listar">
+	    	<img src="/projudi/imagens/novaMensagem.gif" border="0">
+	    </a>
+	
+	
+	
+	
+	
+	
+	<br>	
+	
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+  
+  
+
+
+
+
+  
+  
+
+
+  
+  
+
+
+
+  
+  
+
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+<table cellspacing="0" cellpadding="0" border="0" style="margin-bottom:6px">
+  <tr valign="top">
+    <td width="1%" valign="top" nowrap="nowrap" >
+      <div id="tabHorz" >
+        <ul>
+          
+          
+            
+              
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+                    
+          
+          
+          	
+	          	
+	          	
+	          		
+	          		
+		              <!-- tabProcessos?false -->
+		            <li style="display:" id="tabItemprefix0" class="currentTab" onclick="setTab('/projudi/usuario/mesaAdvogado.do?actionType=listaProcessos', 'tabProcessos', 'prefix', 0, true); ">                     
+		              <div class="tabLeft"></div>
+		              <div class="tabCenter">
+		              	
+							
+								<a>Processos</a>
+							
+							
+						
+		              </div>
+		              <div class="tabRight"></div>
+		            </li>
+	                
+	            
+	            
+          
+          	
+	          	
+	          	
+	          		
+	          		
+		              <!-- tabIntimacoes?false -->
+		            <li style="display:" id="tabItemprefix1" class=" " onclick="setTab('/projudi/usuario/mesaAdvogado.do?actionType=listaInicio&pageNumber=1', 'tabIntimacoes', 'prefix', 1, true); ">                     
+		              <div class="tabLeft"></div>
+		              <div class="tabCenter">
+		              	
+							
+								<a>Intimações</a>
+							
+							
+						
+		              </div>
+		              <div class="tabRight"></div>
+		            </li>
+	                
+	            
+	            
+          
+          	
+	          	
+	          	
+	          		
+	          		
+		              <!-- tabCitacoes?false -->
+		            <li style="display:" id="tabItemprefix2" class=" " onclick="setTab('/projudi/usuario/mesaAdvogado.do?actionType=listaCitacoes&pageNumber=1', 'tabCitacoes', 'prefix', 2, true); ">                     
+		              <div class="tabLeft"></div>
+		              <div class="tabCenter">
+		              	
+							
+								<a>Citações</a>
+							
+							
+						
+		              </div>
+		              <div class="tabRight"></div>
+		            </li>
+	                
+	            
+	            
+          
+          	
+	          	
+	          	
+	          		
+	          		
+		              <!-- tabAudiencias?false -->
+		            <li style="display:" id="tabItemprefix3" class=" " onclick="setTab('/projudi/usuario/mesaAdvogado.do?actionType=listaAudiencias', 'tabAudiencias', 'prefix', 3, true); ">                     
+		              <div class="tabLeft"></div>
+		              <div class="tabCenter">
+		              	
+							
+								<a>Audiências</a>
+							
+							
+						
+		              </div>
+		              <div class="tabRight"></div>
+		            </li>
+	                
+	            
+	            
+          
+          	
+	          	
+	          	
+	          		
+	          		
+		              <!-- tabUltimasMovimentacoes?false -->
+		            <li style="display:" id="tabItemprefix4" class=" " onclick="setTab('/projudi/usuario/mesaAdvogado.do?actionType=listaUltimasMovimentacoes&pageNumber=1', 'tabUltimasMovimentacoes', 'prefix', 4, true); ">                     
+		              <div class="tabLeft"></div>
+		              <div class="tabCenter">
+		              	
+							
+								<a>Últimas Movimentações</a>
+							
+							
+						
+		              </div>
+		              <div class="tabRight"></div>
+		            </li>
+	                
+	            
+	            
+          
+        </ul>
+      </div>
+    </td>
+    
+    
+      
+  </tr>
+  
+  
+    <tr><td width="auto" valign="top" class="masterBlockSubInfoHorz">
+      
+
+
+
+
+
+
+
+	
+	  
+	    
+	    
+	      <div id="tabprefix0" style="display:block;">
+	        
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	
+	function ajaxTotalizar(target, url){
+    	if (target == null || target == 'undefined')
+    		return null;
+    	
+    	var xmlhttp = new XMLHttpRequest();
+    	xmlhttp.onreadystatechange = function() {
+    		if (this.readyState != 4 && this.status != 200) {
+    			target.innerHTML = '';//limpa o conteúdo
+    			//ícone de status
+    			i = document.createElement("img");
+    			i.src = getContextPath() + '/img/indicator.gif';
+    			i.className = 'indicatorOn';
+    			i.alt = 'Aguarde...'
+    			target.appendChild(i);
+    		} else if (this.readyState == 4 && this.status == 200) {
+    			target.innerHTML = '<u>' + this.responseText + '</u>';
+    		}
+    	}
+    	xmlhttp.open('POST', url, true);
+    	xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    	xmlhttp.send('&rid=' + Math.random());
+	}
+	
+</script>
+		
+
+<table width="100%">
+	<tr>
+		<td valign="top">
+			<h4>1º Grau</h4>
+	 			<fieldset>
+				<table class="form">
+					<tr>
+						<td class="label" style="width:250px"><label>Ativos:</label></td>
+						<td><a href="/projudi/processosAdvogado.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4e5ced8b3c18a44fcec1adf7121d506832a46c3be563276201"><u>6</u></a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width:250px"><label>Suspensos:</label></td>
+						<td><a href="/projudi/processosAdvogado.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4e5ced8b3c18a44fce732fe75fc0d8cecb9fa1a564880eb555"><u>0</u></a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width:250px"><label>Arquivados provisoriamente:</label></td>
+						<td><a href="/projudi/processosAdvogado.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4e5ced8b3c18a44fce3c02db0e80c1c32bd8a09bf4955b3d96c96e3fb342f68cbb23990af5390ea48e"><u>0</u></a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width:250px"><label>Arquivados sem distribuição:</label></td>
+						<td><a href="/projudi/processosAdvogado.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4e5ced8b3c18a44fce3c02db0e80c1c32b161553fc69530f226dc849c3aa20a825855ea4e11251f1be"><u>0</u></a></td>
+					</tr>
+					<tr>
+						<td class="label" style="width:250px"><label>Arquivados em definitivo:</label></td>
+						<td><a href="/projudi/processosAdvogado.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4e5ced8b3c18a44fce3c02db0e80c1c32b1ee92581a7aa02b62262c7e58b9eee9b56cd420c8fc67b22"><u>2</u></a></td>
+					</tr>
+					
+					
+						<tr>
+							<td class="label" style="width:250px"><label>Ativos para sociedade de advogados:</label></td>
+							<td>
+							
+								<a id="procSodiedadeAdvogados" href="/projudi/processosAdvogado.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4ea69c133496e61338a33de0d9d364722d" title="Processos ATIVOS das sociedades de advogados das quais o advogado é membro"/></a>
+								
+								
+								<script type="text/javascript">
+									ajaxTotalizar(document.getElementById('procSodiedadeAdvogados'),  '/projudi/usuario/mesaAdvogado.do?_tj=dce4b5d37fcac17e9ad28778d02355516329930825b15224df1f276549206c38b942ce416da1caf3fe5b42446a33fb10480826a8623450d8831ec5f50be7e6d4');
+								</script>
+											
+							</td>
+						</tr>
+					
+					
+				</table>
+			</fieldset>				
+			<br>
+		</td>
+		<td valign="top">
+			<h4>2º Grau</h4>
+	 			<fieldset>
+				<table class="form">
+					<tr>
+						<td class="label" style="width:250px"><label>Ativos:</label></td>
+						<td><a href="/projudi/processo/recursal/recursoBusca.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4e5ba400f71e3cc8ca3d5e0c090c86ad9cacb8cad206970816937d8f9ab6c904c0c1adf7121d506832a46c3be563276201"><u>0</u></a></td>					
+					</tr>
+					<tr>
+						<td class="label" style="width:250px"><label>Suspensos:</label></td>
+						<td><a href="/projudi/processo/recursal/recursoBusca.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4e5ba400f71e3cc8ca3d5e0c090c86ad9cacb8cad206970816937d8f9ab6c904c0732fe75fc0d8cecb9fa1a564880eb555"><u>0</u></a></td>					
+					</tr>
+					<tr>
+						<td class="label" style="width:250px"><label>Arquivados provisoriamente:</label></td>
+						<td><a href="/projudi/processo/recursal/recursoBusca.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4e5ba400f71e3cc8ca3d5e0c090c86ad9cacb8cad206970816937d8f9ab6c904c03c02db0e80c1c32bd8a09bf4955b3d96c96e3fb342f68cbb23990af5390ea48e"><u>0</u></a></td>					
+					</tr>
+					<tr>
+						<td class="label" style="width:250px"><label>Arquivados em definitivo:</label></td>
+						<td><a href="/projudi/processo/recursal/recursoBusca.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4e5ba400f71e3cc8ca3d5e0c090c86ad9cacb8cad206970816937d8f9ab6c904c03c02db0e80c1c32b1ee92581a7aa02b62262c7e58b9eee9b56cd420c8fc67b22"><u>1</u></a></td>					
+					</tr>
+					
+					
+						<tr>
+							<td class="label" style="width:250px"><label>Ativos para sociedade de advogados:</label></td>
+							<td>
+							
+								<a id="recSodiedadeAdvogados" href="/projudi/processo/recursal/recursoBusca.do?_tj=dce4b5d37fcac17ec7ea0e674b1a4d4e981723cd7d0576aa5efd47a00408f21439e7f95528277629de19072a7ba95242" title="Recursos ATIVOS das sociedades de advogados das quais o advogado é membro"/></a>
+								
+								
+								<script type="text/javascript">
+									ajaxTotalizar(document.getElementById('recSodiedadeAdvogados'),  '/projudi/usuario/mesaAdvogado.do?_tj=dce4b5d37fcac17e9ad28778d02355516329930825b15224df1f276549206c38b942ce416da1caf3fe5b42446a33fb10bdd57f9dd3870665f9124bbb157ee093');
+								</script>
+											
+							</td>
+						</tr>
+					
+					
+				</table>
+			</fieldset>
+		</td>
+		
+	</tr>
+	</table>
+	      </div>
+	    
+	    
+	  
+	  
+	
+
+	
+	  
+	    
+	    
+	    
+	      
+	      
+	    
+	  
+	  
+	
+
+	
+	  
+	    
+	    
+	    
+	      
+	      
+	    
+	  
+	  
+	
+
+	
+	  
+	    
+	    
+	    
+	      
+	      
+	    
+	  
+	  
+	
+
+	
+	  
+	    
+	    
+	    
+	      
+	      
+	    
+	  
+	  
+	
+
+    </td></tr>
+  
+</table>
+	<br>
+	
+	
+</form>
+
+<script type="text/javascript">
+	function buscarAudiencias(tipo, segundaInstancia) {
+		document.audienciaForm.idTipoAudiencia.value=tipo;
+		document.audienciaForm.segundaInstancia.value=segundaInstancia;
+		document.audienciaForm.submit();
+	}
+</script>
+
+<form name="audienciaForm" action="/projudi/audiencia/busca.do">
+	<input type="hidden" name="idSituacaoAudiencia" value="5">
+	<input type="hidden" name="idTipoAudiencia" value="C">
+	<input type="hidden" name="audienciaPageSize" value="10">
+	<input type="hidden" name="audienciaPageNumber" value="1">
+	<input type="hidden" name="audienciaSortColumn" value="ag.dataHoraAudiencia">
+	<input type="hidden" name="audienciaSortOrder" value="asc">
+	<input type="hidden" name="actionType" value="listar">
+	<input type="hidden" name="segundaInstancia" value="false">
+</form>
+				      			
+
+					
+				
+      
+				
+			</div>
+			<!DOCTYPE HTML>
+<!-- popup arrastável para exibição de ajuda de contexto. Ver contextHelp.js  -->
+<div id="draggablePopupHelp" class="draggablePopupHelp" style="display: none;">
+	<div id="popupHelpTitleBar" class="titleBar"></div>
+	<div id="popupHelpContainer" class="popupHelpContainer"></div>
+	<input id="draggablePopupHelp_internalID" type="hidden" value=""/>
+</div>
+<script type="text/javascript">
+	//cria o draggable aqui para evitar conflito com iframes (popup, etc).
+	new Draggable('draggablePopupHelp',{ handle: 'titleBar', onEnd: function(draggable, event){updatePopupPosition(draggable.element);} });
+	reOpenContextHelp();//verifica se o popup estava aberto antes de recarregar a página.
+</script>
+			
+			<hr/>
+		</div>
+		<a href='/projudi//include_common.html' style="text-decoration:none; cursor:default; position:fixed; bottom:-20px;">&nbsp;&nbsp;</a>
+		
+		<script type="text/javascript">
+			if(typeof isDesabilitarLinksNovaAba != 'undefined' && isDesabilitarLinksNovaAba()){
+				var menu= parent.document;				
+				desabilitarLinksNovaAba(menu);
+			}
+		</script>		
+	</body>
+</html>

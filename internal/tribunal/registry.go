@@ -29,7 +29,7 @@ var _ Registry = (*inMemRegistry)(nil)
 
 // NewRegistry cria o registro de drivers judiciais já populado com os
 // drivers suportados pela aplicação.
-func NewRegistry(eproc EProcClient, projudi ProjudiClient) Registry {
+func NewRegistry(eproc Driver, projudi Driver) Registry {
 	r := &inMemRegistry{
 		drivers: make(map[model.Tribunal]Driver),
 	}

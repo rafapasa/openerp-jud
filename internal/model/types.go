@@ -65,3 +65,35 @@ type ConsultaFiltro struct {
 	NumeroProcesso string   `json:"numero_processo,omitempty"`
 	Tribunal       Tribunal `json:"tribunal"`
 }
+
+// FormularioConsulta descreve os seletores e metadados do formulário de consulta
+// de um portal de tribunal, permitindo que o driver preencha os campos sem
+// depender de seletores hardcoded.
+type FormularioConsulta struct {
+	// Action é a URL de destino do <form>.
+	Action string `json:"action,omitempty"`
+	// Method é o método HTTP do <form> (GET ou POST).
+	Method string `json:"method,omitempty"`
+
+	// CampoNumeroProcesso é o seletor do input de número do processo.
+	CampoNumeroProcesso string `json:"campo_numero_processo,omitempty"`
+	// CampoNomeParte é o seletor do input de nome da parte.
+	CampoNomeParte string `json:"campo_nome_parte,omitempty"`
+	// CampoDocumento é o seletor do input de CPF/CNPJ.
+	CampoDocumento string `json:"campo_documento,omitempty"`
+	// CampoOAB é o seletor do input de OAB.
+	CampoOAB string `json:"campo_oab,omitempty"`
+
+	// RadioPessoaFisica é o seletor do radio de CPF.
+	RadioPessoaFisica string `json:"radio_pessoa_fisica,omitempty"`
+	// RadioPessoaJuridica é o seletor do radio de CNPJ.
+	RadioPessoaJuridica string `json:"radio_pessoa_juridica,omitempty"`
+
+	// BotaoSubmit é o seletor do botão de submissão.
+	BotaoSubmit string `json:"botao_submit,omitempty"`
+
+	// PossuiCaptcha indica se o formulário exige resolução de captcha.
+	PossuiCaptcha bool `json:"possui_captcha"`
+	// CaptchaSiteKey é a chave do site do captcha, quando presente.
+	CaptchaSiteKey string `json:"captcha_site_key,omitempty"`
+}

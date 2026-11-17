@@ -48,19 +48,36 @@ func (m *MockTribunalDriver) BaixarPeca(ctx context.Context, numeroCNJ, docID, d
 	return args.String(0), args.Error(1)
 }
 
-func setupTestEnvironment() (*config.Config, *tribunal.InMemRegistry) {
-	cfg := &config.Config{
+// newMockDriver cria um mock já configurado com o tribunal informado.
+func newMockDriver(trib model.Tribunal) *MockTribunalDriver {
+	m := new(MockTribunalDriver)
+	m.On("Tribunal").Return(trib)
+	return m
+}
+
+// newTestRegistry monta o Registry com os dois drivers exigidos por NewRegistry.
+// Quando um tribunal não é usado no teste, passa-se um mock com tribunal "NONE",
+// que nunca é consultado.
+func newTestRegistry(eproc, projudi *MockTribunalDriver) tribunal.Registry {
+	if eproc == nil {
+		eproc = newMockDriver(model.Tribunal("NONE"))
+	}
+	if projudi == nil {
+		projudi = newMockDriver(model.Tribunal("NONE"))
+	}
+	return tribunal.NewRegistry(eproc, projudi)
+}
+
+func setupTestEnvironment() *config.Config {
+	return &config.Config{
 		DownloadsDir: "/tmp/openerp-jud-test",
 	}
-	reg := tribunal.NewRegistry()
-	return cfg, reg
 }
 
 func TestHandleConsultarProcessosCPF_Sucesso_TribunalEspecifico(t *testing.T) {
-	cfg, reg := setupTestEnvironment()
+	cfg := setupTestEnvironment()
 
-	mockTJSC := new(MockTribunalDriver)
-	mockTJSC.On("Tribunal").Return(model.TribunalTJSC)
+	mockTJSC := newMockDriver(model.TribunalTJSC)
 
 	esperados := []model.Processo{
 		{
@@ -73,13 +90,10 @@ func TestHandleConsultarProcessosCPF_Sucesso_TribunalEspecifico(t *testing.T) {
 	}
 	mockTJSC.On("ConsultarPorCPF", mock.Anything, "123.456.789-00").Return(esperados, nil)
 
-	reg.Register(mockTJSC)
-	handler := mcp.NewToolHandler(cfg, reg)
+	handler := mcp.NewToolHandler(cfg, newTestRegistry(mockTJSC, nil))
 
-	// Act
 	resultado, err := handler.HandleConsultarProcessosCPF(context.Background(), "123.456.789-00", model.TribunalTJSC)
 
-	// Assert
 	require.NoError(t, err)
 	assert.Len(t, resultado, 1)
 	assert.Equal(t, "5001234-56.2026.8.24.0001", resultado[0].NumeroCNJ)
@@ -88,28 +102,22 @@ func TestHandleConsultarProcessosCPF_Sucesso_TribunalEspecifico(t *testing.T) {
 }
 
 func TestHandleConsultarProcessosCPF_Federado_Todos(t *testing.T) {
-	cfg, reg := setupTestEnvironment()
+	cfg := setupTestEnvironment()
 
-	mockTJSC := new(MockTribunalDriver)
-	mockTJSC.On("Tribunal").Return(model.TribunalTJSC)
+	mockTJSC := newMockDriver(model.TribunalTJSC)
 	mockTJSC.On("ConsultarPorCPF", mock.Anything, "12345678900").Return([]model.Processo{
 		{NumeroCNJ: "5001111-11.2026.8.24.0001", Tribunal: model.TribunalTJSC},
 	}, nil)
 
-	mockTJPR := new(MockTribunalDriver)
-	mockTJPR.On("Tribunal").Return(model.TribunalTJPR)
+	mockTJPR := newMockDriver(model.TribunalTJPR)
 	mockTJPR.On("ConsultarPorCPF", mock.Anything, "12345678900").Return([]model.Processo{
 		{NumeroCNJ: "0002222-22.2026.8.16.0001", Tribunal: model.TribunalTJPR},
 	}, nil)
 
-	reg.Register(mockTJSC)
-	reg.Register(mockTJPR)
-	handler := mcp.NewToolHandler(cfg, reg)
+	handler := mcp.NewToolHandler(cfg, newTestRegistry(mockTJSC, mockTJPR))
 
-	// Act: Tribunal = TODOS
 	resultado, err := handler.HandleConsultarProcessosCPF(context.Background(), "12345678900", model.TribunalTodos)
 
-	// Assert: deve unificar processos de ambos os tribunais
 	require.NoError(t, err)
 	assert.Len(t, resultado, 2)
 
@@ -122,36 +130,31 @@ func TestHandleConsultarProcessosCPF_Federado_Todos(t *testing.T) {
 }
 
 func TestHandleConsultarProcessosCPF_Erro_CPF_Vazio(t *testing.T) {
-	cfg, reg := setupTestEnvironment()
-	handler := mcp.NewToolHandler(cfg, reg)
+	cfg := setupTestEnvironment()
+	handler := mcp.NewToolHandler(cfg, newTestRegistry(nil, nil))
 
-	// Act
 	resultado, err := handler.HandleConsultarProcessosCPF(context.Background(), "", model.TribunalTJSC)
 
-	// Assert
 	require.Error(t, err)
 	assert.Nil(t, resultado)
 	assert.Contains(t, err.Error(), "cpf obrigatório")
 }
 
 func TestHandleConsultarProcessosCPF_TribunalNaoRegistrado(t *testing.T) {
-	cfg, reg := setupTestEnvironment()
-	handler := mcp.NewToolHandler(cfg, reg)
+	cfg := setupTestEnvironment()
+	handler := mcp.NewToolHandler(cfg, newTestRegistry(nil, nil))
 
-	// Act
 	resultado, err := handler.HandleConsultarProcessosCPF(context.Background(), "12345678900", model.Tribunal("TRF4"))
 
-	// Assert
 	require.Error(t, err)
 	assert.Nil(t, resultado)
 	assert.Contains(t, err.Error(), "não encontrado")
 }
 
 func TestHandleObterDetalhesProcesso_Sucesso(t *testing.T) {
-	cfg, reg := setupTestEnvironment()
+	cfg := setupTestEnvironment()
 
-	mockTJSC := new(MockTribunalDriver)
-	mockTJSC.On("Tribunal").Return(model.TribunalTJSC)
+	mockTJSC := newMockDriver(model.TribunalTJSC)
 
 	agora := time.Now()
 	detalheEsperado := &model.Processo{
@@ -172,14 +175,11 @@ func TestHandleObterDetalhesProcesso_Sucesso(t *testing.T) {
 	}
 
 	mockTJSC.On("ObterProcesso", mock.Anything, "5001234-56.2026.8.24.0001").Return(detalheEsperado, nil)
-	reg.Register(mockTJSC)
 
-	handler := mcp.NewToolHandler(cfg, reg)
+	handler := mcp.NewToolHandler(cfg, newTestRegistry(mockTJSC, nil))
 
-	// Act
 	proc, err := handler.HandleObterDetalhesProcesso(context.Background(), "5001234-56.2026.8.24.0001", model.TribunalTJSC)
 
-	// Assert
 	require.NoError(t, err)
 	require.NotNil(t, proc)
 	assert.Equal(t, "5001234-56.2026.8.24.0001", proc.NumeroCNJ)
@@ -191,8 +191,8 @@ func TestHandleObterDetalhesProcesso_Sucesso(t *testing.T) {
 }
 
 func TestHandleObterDetalhesProcesso_Erro_NumeroVazio(t *testing.T) {
-	cfg, reg := setupTestEnvironment()
-	handler := mcp.NewToolHandler(cfg, reg)
+	cfg := setupTestEnvironment()
+	handler := mcp.NewToolHandler(cfg, newTestRegistry(nil, nil))
 
 	proc, err := handler.HandleObterDetalhesProcesso(context.Background(), "", model.TribunalTJSC)
 
@@ -202,30 +202,26 @@ func TestHandleObterDetalhesProcesso_Erro_NumeroVazio(t *testing.T) {
 }
 
 func TestHandleBaixarPeca_Sucesso(t *testing.T) {
-	cfg, reg := setupTestEnvironment()
+	cfg := setupTestEnvironment()
 
-	mockTJPR := new(MockTribunalDriver)
-	mockTJPR.On("Tribunal").Return(model.TribunalTJPR)
+	mockTJPR := newMockDriver(model.TribunalTJPR)
 
 	caminhoEsperado := "/tmp/openerp-jud-test/0002222-22.2026.8.16.0001_doc123.pdf"
 	mockTJPR.On("BaixarPeca", mock.Anything, "0002222-22.2026.8.16.0001", "doc123", cfg.DownloadsDir).
 		Return(caminhoEsperado, nil)
 
-	reg.Register(mockTJPR)
-	handler := mcp.NewToolHandler(cfg, reg)
+	handler := mcp.NewToolHandler(cfg, newTestRegistry(nil, mockTJPR))
 
-	// Act
 	caminho, err := handler.HandleBaixarPeca(context.Background(), model.TribunalTJPR, "0002222-22.2026.8.16.0001", "doc123")
 
-	// Assert
 	require.NoError(t, err)
 	assert.Equal(t, caminhoEsperado, caminho)
 	mockTJPR.AssertExpectations(t)
 }
 
 func TestHandleBaixarPeca_Erro_DocIDVazio(t *testing.T) {
-	cfg, reg := setupTestEnvironment()
-	handler := mcp.NewToolHandler(cfg, reg)
+	cfg := setupTestEnvironment()
+	handler := mcp.NewToolHandler(cfg, newTestRegistry(nil, nil))
 
 	caminho, err := handler.HandleBaixarPeca(context.Background(), model.TribunalTJPR, "0002222-22.2026.8.16.0001", "")
 
@@ -235,15 +231,13 @@ func TestHandleBaixarPeca_Erro_DocIDVazio(t *testing.T) {
 }
 
 func TestHandleBaixarPeca_Erro_Driver(t *testing.T) {
-	cfg, reg := setupTestEnvironment()
+	cfg := setupTestEnvironment()
 
-	mockTJSC := new(MockTribunalDriver)
-	mockTJSC.On("Tribunal").Return(model.TribunalTJSC)
+	mockTJSC := newMockDriver(model.TribunalTJSC)
 	mockTJSC.On("BaixarPeca", mock.Anything, "5001234-56.2026.8.24.0001", "doc999", cfg.DownloadsDir).
 		Return("", errors.New("documento em segredo de justiça"))
 
-	reg.Register(mockTJSC)
-	handler := mcp.NewToolHandler(cfg, reg)
+	handler := mcp.NewToolHandler(cfg, newTestRegistry(mockTJSC, nil))
 
 	caminho, err := handler.HandleBaixarPeca(context.Background(), model.TribunalTJSC, "5001234-56.2026.8.24.0001", "doc999")
 
@@ -252,4 +246,3 @@ func TestHandleBaixarPeca_Erro_Driver(t *testing.T) {
 	assert.Contains(t, err.Error(), "documento em segredo de justiça")
 	mockTJSC.AssertExpectations(t)
 }
-
