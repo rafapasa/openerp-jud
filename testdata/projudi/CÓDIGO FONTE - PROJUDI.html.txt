@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Projudi - Processo Eletrônico do Judiciário do Paraná</title>
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+    <meta name="description" content="Projudi - Processo Judicial Digital, é um programa de computador que pode ser utilizado através da Internet e permite a completa substituição do papel por autos processuais digitais.">
+    <meta name="keywords" content="CNJ, Processo Judicial Digital, Processo digital, Processo virtual, Processo eletronico, Projudi, Conselho Nacional de Justiça, Juizado virtual, Justica eletronica">
+
+    <script type="text/javascript" src="js/cookie.js?updateIdx=3"></script>
+    <script type="text/javascript">
+        MM_reloadPage(true);
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+
+        function initCookie(){
+            var cok = getCookie('projudiContCookie');
+            var cont = 1;
+            if(cok != null && !isNaN(cok)){
+                cont = parseInt(cok)+1;
+            }
+            setCookie('projudiContCookie',cont);
+        }
+
+        //window.onbeforeunload = HandleOnClose;
+    </script>
+</head>
+<script type="text/javascript">
+    document.writeln(
+        '<frameset id="frameSetTeste" rows="45,*" framespacing="0" frameborder="no" border="0" bordercolor="#FFFFFF" onload="initCookie()" >'+
+        ' <frame src="" name="topFrame" id="topFrame" scrolling="NO" noresize>'+
+        ' <frame src="home.do?r='+ Math.random() +'" name="mainFrame" id="mainFrame">'+
+        '</frameset>'+
+        '<noframes><body></body></noframes>');
+</script>
+</html>
