@@ -8,6 +8,8 @@ import (
 	"go.uber.org/zap"
 )
 
+// GetHTMLDoc converte uma string HTML em um documento goquery navegável.
+// Centraliza o parse de HTML dos portais dos tribunais.
 func GetHTMLDoc(html string) (*goquery.Document, error) {
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 	if err != nil {

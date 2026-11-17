@@ -1,0 +1,92 @@
+<!--
+  Fragmento real do formulário de consulta pública eProc TJSC
+  Fonte: https://eprocwebcon.tjsc.jus.br/consulta1g/externo_controlador.php?acao=processo_consulta_publica
+  Capturado: 2026-11-13
+  Charset original da página: iso-8859-1
+  Observação: POST exige Cloudflare Turnstile (cf-turnstile sitekey 0x4AAAAAAA9zgl8AcFbokEy4).
+  Consulta por CPF 03624841980 sem token Turnstile NÃO retorna grid de processos.
+-->
+<form
+        id="frmProcessoLista"
+        method="post"
+        onsubmit="return OnSubmitForm();"
+        action="externo_controlador.php?acao=processo_consulta_publica&acao_origem=principal&acao_retorno=processo_consulta_publica"
+    >
+    <input type="hidden" id="hdnInfraTipoPagina" name="hdnInfraTipoPagina" value="1"/>
+<div id="divInfraBarraComandosSuperior" class="infraBarraComandos">
+<button type="submit" accesskey="C" name="sbmNovo" id="sbmNovo" value="Consultar" class="infraButton btn btn-primary"><span class="infraTeclaAtalho">C</span>onsultar</button>
+</div>
+<div id="divInfraAreaDados" class="infraAreaDados" style="height:auto;">
+
+        <fieldset class="infraFieldset">
+            <legend>Critérios da consulta processual</legend>
+            <div class="row align-items-end">
+                <div class="col-12 col-md-4 form-group">
+                    <label id="lblNumProcesso" for="txtNumProcesso" accesskey="s" class="infraLabelObrigatorio">
+                        Nº Proce<span class="infraTeclaAtalho">s</span>so:
+                    </label>
+                    <input type="text" id="txtNumProcesso" name="txtNumProcesso" class="infraText form-control"
+                        onkeypress="return infraMascara(this,event,'#######-##.####.#.##.####');"
+                        value="" maxlength="25" />
+                </div>
+            </div>
+
+            <div class="row align-items-end">
+                <div class="col-12 col-md-7">
+                    <div class="row align-items-center">
+                        <div class="col form-group mb-0 mb-md-3">
+                            <label id="lblNumChave" for="txtNumChave" accesskey="C" class="infraLabelObrigatorio">
+                                <span class="infraTeclaAtalho">C</span>have Processo:
+                            </label>
+                            <input type="text" id="txtNumChave" name="txtNumChave" class="infraText form-control" value="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-end">
+                <div class="col-12 col-md-4 form-group">
+                    <label id="lblNumChaveDocumento" for="txtNumChaveDocumento" class="infraLabelObrigatorio">Chave Documento:</label>
+                    <input type="text" id="txtNumChaveDocumento" name="txtNumChaveDocumento" class="infraText form-control" value="" />
+                </div>
+            </div>
+
+            <div class="row align-items-end">
+                <div class="col-12 col-md-6 form-group">
+                    <label id="lblStrParte" for="txtStrParte" class="infraLabelObrigatorio">Nome da Parte:</label>
+                    <input type="text" id="txtStrParte" name="txtStrParte" class="infraText form-control" value="" />
+                    <input type="hidden" name="chkFonetica" value="N" />
+                    <input type="checkbox" id="chkFonetica" name="chkFonetica" value="S" />
+                    <label for="chkFonetica">Pesquisa fonética</label>
+                </div>
+            </div>
+
+            <div class="row align-items-end">
+                <div class="col-12 col-md-4 form-group">
+                    <input type="radio" id="rdoPessoaFisica" name="rdoTipo" value="CPF" checked="checked" />
+                    <label for="rdoPessoaFisica">CPF</label>
+                    <input type="radio" id="rdoPessoaJuridica" name="rdoTipo" value="CNPJ" />
+                    <label for="rdoPessoaJuridica">CNPJ</label>
+                    <label id="lblCpfCnpj" for="txtCpfCnpj" class="infraLabelObrigatorio">CPF/CNPJ:</label>
+                    <input type="text" id="txtCpfCnpj" name="txtCpfCnpj" class="infraText form-control" value="" />
+                </div>
+            </div>
+
+            <div class="row align-items-end">
+                <div class="col-12 col-md-4 form-group">
+                    <label id="lblStrOAB" for="txtStrOAB" accesskey="O" class="infraLabelObrigatorio">
+                        <span class="infraTeclaAtalho">O</span>AB:
+                    </label>
+                    <input type="text" id="txtStrOAB" name="txtStrOAB" class="infraText form-control" value="" />
+                </div>
+            </div>
+        </fieldset>
+
+<div id="divInfraCaptcha" class="infraAreaDados">
+  <!-- Cloudflare Turnstile — obrigatório para POST de consulta -->
+  <div class="cf-turnstile" data-sitekey="0x4AAAAAAA9zgl8AcFbokEy4" data-callback="callbackCloudflare"></div>
+  <input type="hidden" id="hdnInfraCaptcha" name="hdnInfraCaptcha" value="0" />
+</div>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</div>
+</form>

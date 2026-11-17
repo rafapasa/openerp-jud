@@ -13,6 +13,10 @@ type Server interface {
 
 	// Serve inicializa a escuta de requisições no transporte configurado (Stdio ou SSE/HTTP).
 	Serve(ctx context.Context) error
+
+	// Close encerra recursos de infraestrutura possuídos pelo servidor
+	// (navegador Chromium, driver Playwright). É idempotente.
+	Close() error
 }
 
 // ToolHandler define os contratos de execução das ferramentas (Tools) expostas pelo MCP Server para o ERP.
@@ -28,4 +32,3 @@ type ToolHandler interface {
 	// HandleBaixarPeca processa o download da peça/documento judicial para entrega ao ERP.
 	HandleBaixarPeca(ctx context.Context, tribunal model.Tribunal, numeroProcesso, docID string) (string, error)
 }
-

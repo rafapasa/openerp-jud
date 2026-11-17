@@ -1,0 +1,26 @@
+services:
+  openerp-jud:
+    image: ${DOCKER_USERNAME:-rafapasa}/openerp-jud:${IMAGE_TAG:-latest}
+    container_name: openerp-jud
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    env_file:
+      - .env
+    environment:
+      MCP_TRANSPORT: sse
+      PORT: "8080"
+      CERT_PATH: /app/certs/advogado.pfx
+      DOWNLOADS_DIR: /app/tmp/downloads
+    volumes:
+      # Certificado A1 — nunca versionar; montar do host
+      - ${CERTS_HOST_PATH:-./certs}:/app/certs:ro
+      - ${DOWNLOADS_HOST_PATH:-./tmp/downloads}:/app/tmp/downloads
+      - ${LOGS_HOST_PATH:-./logs}:/app/logs
+    networks:
+      - mcp-network
+
+networks:
+  mcp-network:
+    external: true
+    name: mcp-network

@@ -7,30 +7,48 @@ import (
 	"github.com/rafapasa/openerp-jud/internal/model"
 )
 
-// InMemRegistry implementa a interface Registry armazenando os drivers em memória de forma thread-safe.
-type InMemRegistry struct {
+// Registry gerencia a resolução de drivers por tribunal.
+type Registry interface {
+	// Register adiciona um driver ao registro.
+	Register(driver Driver)
+
+	// Get recupera o driver correspondente ao tribunal solicitado.
+	Get(tribunal model.Tribunal) (Driver, error)
+
+	// List retorna todos os drivers registrados.
+	List() []Driver
+}
+
+// inMemRegistry implementa a interface Registry armazenando os drivers em memória de forma thread-safe.
+type inMemRegistry struct {
 	mu      sync.RWMutex
 	drivers map[model.Tribunal]Driver
 }
 
-var _ Registry = (*InMemRegistry)(nil)
+var _ Registry = (*inMemRegistry)(nil)
 
-// NewRegistry cria uma nova instância do registro de drivers judiciais.
-func NewRegistry() *InMemRegistry {
-	return &InMemRegistry{
+// NewRegistry cria o registro de drivers judiciais já populado com os
+// drivers suportados pela aplicação.
+func NewRegistry(eproc EProcClient, projudi ProjudiClient) Registry {
+	r := &inMemRegistry{
 		drivers: make(map[model.Tribunal]Driver),
 	}
+
+	r.Register(eproc)
+	r.Register(projudi)
+
+	return r
 }
 
 // Register adiciona um driver ao mapa do registro.
-func (r *InMemRegistry) Register(driver Driver) {
+func (r *inMemRegistry) Register(driver Driver) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.drivers[driver.Tribunal()] = driver
 }
 
 // Get recupera o driver solicitado.
-func (r *InMemRegistry) Get(tribunal model.Tribunal) (Driver, error) {
+func (r *inMemRegistry) Get(tribunal model.Tribunal) (Driver, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -42,7 +60,7 @@ func (r *InMemRegistry) Get(tribunal model.Tribunal) (Driver, error) {
 }
 
 // List retorna a lista de todos os drivers registrados.
-func (r *InMemRegistry) List() []Driver {
+func (r *inMemRegistry) List() []Driver {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -52,4 +70,3 @@ func (r *InMemRegistry) List() []Driver {
 	}
 	return list
 }
-

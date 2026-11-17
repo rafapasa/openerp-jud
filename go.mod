@@ -5,6 +5,7 @@ go 1.27.1
 require (
 	github.com/PuerkitoBio/goquery v1.13.0
 	github.com/etoolstec/gokit v1.0.12
+	github.com/google/wire v0.7.0
 	github.com/mark3labs/mcp-go v1.5.0
 	github.com/mxschmitt/playwright-go v0.6401.0
 	github.com/stretchr/testify v1.11.1

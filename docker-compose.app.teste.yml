@@ -1,0 +1,27 @@
+services:
+  openerp-jud-test:
+    image: ${DOCKER_USERNAME:-rafapasa}/openerp-jud-test:${IMAGE_TAG:-test}
+    container_name: openerp-jud-test
+    restart: unless-stopped
+    ports:
+      - "8083:8080"
+    env_file:
+      - .env
+    environment:
+      MCP_TRANSPORT: sse
+      PORT: "8080"
+      ENVIRONMENT: development
+      LOG_LEVEL: debug
+      CERT_PATH: /app/certs/advogado.pfx
+      DOWNLOADS_DIR: /app/tmp/downloads
+    volumes:
+      - ${CERTS_HOST_PATH:-./certs}:/app/certs:ro
+      - ${DOWNLOADS_HOST_PATH:-./tmp/downloads}:/app/tmp/downloads
+      - ${LOGS_HOST_PATH:-./logs}:/app/logs
+    networks:
+      - mcp-network
+
+networks:
+  mcp-network:
+    external: true
+    name: mcp-network

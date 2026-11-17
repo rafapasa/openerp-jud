@@ -5,39 +5,48 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"sync"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	mcpserver "github.com/mark3labs/mcp-go/server"
 	"github.com/rafapasa/openerp-jud/config"
+	"github.com/rafapasa/openerp-jud/internal/browser"
 	"github.com/rafapasa/openerp-jud/internal/model"
 )
 
-// MCPServer encapsula o servidor MCP e registra as ferramentas disponíveis para o ERP.
-type MCPServer struct {
+// mcpServer encapsula o servidor MCP e registra as ferramentas disponíveis para o ERP.
+// Possui o ContextManager do navegador para garantir encerramento ordenado no shutdown.
+type mcpServer struct {
 	cfg     *config.Config
 	server  *mcpserver.MCPServer
 	handler ToolHandler
+	browser browser.ContextManager
+
+	closeOnce sync.Once
+	closeErr  error
 }
 
-var _ Server = (*MCPServer)(nil)
+var _ Server = (*mcpServer)(nil)
 
 // NewServer cria uma nova instância do servidor MCP.
-func NewServer(cfg *config.Config, handler ToolHandler) *MCPServer {
+// O ContextManager é injetado para que Close() libere o Chromium/Playwright.
+func NewServer(cfg *config.Config, handler ToolHandler, cm browser.ContextManager) Server {
 	s := mcpserver.NewMCPServer(
 		"openerp-jud",
 		"1.0.0",
 		mcpserver.WithToolCapabilities(true),
 	)
 
-	return &MCPServer{
+	return &mcpServer{
 		cfg:     cfg,
 		server:  s,
 		handler: handler,
+		browser: cm,
 	}
 }
 
 // RegisterTools registra todas as ferramentas judiciais disponíveis.
-func (s *MCPServer) RegisterTools() error {
+func (s *mcpServer) RegisterTools() error {
 	// 1. Tool: consultar_processos_cpf
 	s.server.AddTool(
 		mcp.NewTool(
@@ -75,7 +84,7 @@ func (s *MCPServer) RegisterTools() error {
 	return nil
 }
 
-func (s *MCPServer) handleConsultarCPF(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func (s *mcpServer) handleConsultarCPF(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	cpf, err := request.RequireString("cpf")
 	if err != nil || cpf == "" {
 		return mcp.NewToolResultError("argumento 'cpf' é obrigatório"), nil
@@ -97,7 +106,7 @@ func (s *MCPServer) handleConsultarCPF(ctx context.Context, request mcp.CallTool
 	return mcp.NewToolResultText(string(bytes)), nil
 }
 
-func (s *MCPServer) handleObterDetalhes(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func (s *mcpServer) handleObterDetalhes(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	numero, err := request.RequireString("numero_processo")
 	if err != nil || numero == "" {
 		return mcp.NewToolResultError("argumento 'numero_processo' é obrigatório"), nil
@@ -121,7 +130,7 @@ func (s *MCPServer) handleObterDetalhes(ctx context.Context, request mcp.CallToo
 	return mcp.NewToolResultText(string(bytes)), nil
 }
 
-func (s *MCPServer) handleBaixarPeca(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func (s *mcpServer) handleBaixarPeca(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	tribStr, err := request.RequireString("tribunal")
 	if err != nil || tribStr == "" {
 		return mcp.NewToolResultError("argumento 'tribunal' é obrigatório"), nil
@@ -146,7 +155,7 @@ func (s *MCPServer) handleBaixarPeca(ctx context.Context, request mcp.CallToolRe
 }
 
 // Serve inicia o servidor MCP no modo configurado (Stdio ou SSE/HTTP).
-func (s *MCPServer) Serve(ctx context.Context) error {
+func (s *mcpServer) Serve(ctx context.Context) error {
 	if err := s.RegisterTools(); err != nil {
 		return fmt.Errorf("falha ao registrar tools: %w", err)
 	}
@@ -162,3 +171,13 @@ func (s *MCPServer) Serve(ctx context.Context) error {
 	return mcpserver.ServeStdio(s.server)
 }
 
+// Close encerra o navegador Chromium e o driver Playwright.
+// Idempotente: chamadas subsequentes são no-op e retornam o mesmo erro da primeira execução.
+func (s *mcpServer) Close() error {
+	s.closeOnce.Do(func() {
+		if s.browser != nil {
+			s.closeErr = s.browser.Close()
+		}
+	})
+	return s.closeErr
+}

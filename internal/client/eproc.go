@@ -15,30 +15,27 @@ const (
 	TJSCPublicSearch = "https://eproc1g.tjsc.jus.br/eproc/externo_controlador.php?acao=processo_consulta_publica"
 )
 
-// Client implementa o driver de automação do eProc TJSC.
-type EProcClient struct {
+// eProcClient implementa o driver de automação do eProc TJSC.
+type eProcClient struct {
 	cfg            *config.Config
 	browserManager browser.ContextManager
 }
 
-// var _ Service = (*EProcClient)(nil)
-var _ tribunal.Driver = (*EProcClient)(nil)
-
-// NewClient cria uma nova instância do driver do eProc TJSC.
-func NewEProcClient(cfg *config.Config, bm browser.ContextManager) *EProcClient {
-	return &EProcClient{
+// NewEProcClient cria uma nova instância do driver do eProc TJSC.
+func NewEProcClient(cfg *config.Config, bm browser.ContextManager) tribunal.EProcClient {
+	return &eProcClient{
 		cfg:            cfg,
 		browserManager: bm,
 	}
 }
 
 // Tribunal retorna o identificador do tribunal atendido.
-func (c *EProcClient) Tribunal() model.Tribunal {
+func (c *eProcClient) Tribunal() model.Tribunal {
 	return model.TribunalTJSC
 }
 
 // ConsultarPorCPF consulta processos vinculados ao CPF no eProc TJSC.
-func (c *EProcClient) ConsultarPorCPF(ctx context.Context, cpf string) ([]model.Processo, error) {
+func (c *eProcClient) ConsultarPorCPF(ctx context.Context, cpf string) ([]model.Processo, error) {
 	bCtx, err := c.browserManager.NewContext(TJSCBaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("eproc tjsc: erro ao criar contexto: %w", err)
@@ -52,7 +49,7 @@ func (c *EProcClient) ConsultarPorCPF(ctx context.Context, cpf string) ([]model.
 	defer page.Close()
 
 	// Navegação inicial
-	if _, err := page.Goto(TJSCPublicSearch); err != nil {
+	if err := page.Goto(TJSCPublicSearch); err != nil {
 		return nil, fmt.Errorf("eproc tjsc: falha ao acessar portal: %w", err)
 	}
 
@@ -61,7 +58,7 @@ func (c *EProcClient) ConsultarPorCPF(ctx context.Context, cpf string) ([]model.
 }
 
 // ObterProcesso busca detalhes completos de um processo pelo número único CNJ.
-func (c *EProcClient) ObterProcesso(ctx context.Context, numeroCNJ string) (*model.Processo, error) {
+func (c *eProcClient) ObterProcesso(ctx context.Context, numeroCNJ string) (*model.Processo, error) {
 	bCtx, err := c.browserManager.NewContext(TJSCBaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("eproc tjsc: erro ao criar contexto: %w", err)
@@ -82,7 +79,7 @@ func (c *EProcClient) ObterProcesso(ctx context.Context, numeroCNJ string) (*mod
 }
 
 // BaixarPeca realiza o download de uma peça/documento específico em PDF.
-func (c *EProcClient) BaixarPeca(ctx context.Context, numeroCNJ, docID, destino string) (string, error) {
+func (c *eProcClient) BaixarPeca(ctx context.Context, numeroCNJ, docID, destino string) (string, error) {
 	bCtx, err := c.browserManager.NewContext(TJSCBaseURL)
 	if err != nil {
 		return "", fmt.Errorf("eproc tjsc: erro ao criar contexto: %w", err)

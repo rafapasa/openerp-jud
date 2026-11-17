@@ -1,8 +1,10 @@
 package client
 
-import "github.com/rafapasa/openerp-jud/internal/model"
+import (
+	"github.com/rafapasa/openerp-jud/internal/model"
+)
 
-// HTMLParser define as operações de extração e conversão de dados do HTML do eProc.
+// HTMLParser define as operações de extração e conversão de dados do HTML dos tribunais.
 // Permite testes unitários de parser com snapshots HTML puros, sem necessitar do navegador.
 type HTMLParser interface {
 	// ParseTabelaProcessos extrai a lista de processos a partir da tabela de resultados de busca por CPF.

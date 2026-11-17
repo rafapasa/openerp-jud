@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><title>PROJUDI - Processo Judicial Digital</title></head>
+<body>
+  <div id="conteudo">
+    <h3>Dados do Processo</h3>
+    <table class="form">
+      <tr>
+        <td class="label">Número Único:</td>
+        <td class="value"><strong>0001234-56.2025.8.16.0001</strong></td>
+        <td class="label">Distribuição:</td>
+        <td class="value">10/03/2025 às 09:15:22</td>
+      </tr>
+      <tr>
+        <td class="label">Classe Processual:</td>
+        <td class="value">Procedimento Comum Cível</td>
+        <td class="label">Assunto Principal:</td>
+        <td class="value">Indenização por Dano Moral</td>
+      </tr>
+      <tr>
+        <td class="label">Vara / Juízo:</td>
+        <td class="value">1ª Vara Cível</td>
+        <td class="label">Valor da Causa:</td>
+        <td class="value">R$ 25.000,00</td>
+      </tr>
+    </table>
+
+    <h4>Partes do Processo</h4>
+    <table class="resultTable" id="tabelaPartes">
+      <thead>
+        <tr>
+          <th>Polo</th>
+          <th>Nome</th>
+          <th>Documento</th>
+          <th>Advogado(s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>Ativo (Autor)</td>
+          <td>MARIA OLIVEIRA</td>
+          <td>111.222.333-44</td>
+          <td>DR. BELTRANO (OAB/PR 54321)</td>
+        </tr>
+        <tr class="even">
+          <td>Passivo (Réu)</td>
+          <td>EMPRESA EXEMPLO LTDA</td>
+          <td>12.345.678/0001-99</td>
+          <td>-</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Movimentações</h4>
+    <table class="resultTable" id="tabelaMovimentacoes">
+      <thead>
+        <tr>
+          <th>Seq.</th>
+          <th>Data</th>
+          <th>Movimentação</th>
+          <th>Arquivos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>2</td>
+          <td>12/03/2025 11:00</td>
+          <td>Proferido despacho de mero expediente</td>
+          <td>
+            <ul class="arquivos">
+              <li>
+                <a href="/projudi/processo/arquivo.do?id=998877&hash=a1b2c3d4">Despacho.pdf</a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr class="even">
+          <td>1</td>
+          <td>10/03/2025 09:15</td>
+          <td>Distribuído por sorteio</td>
+          <td>
+            <ul class="arquivos">
+              <li>
+                <a href="/projudi/processo/arquivo.do?id=998876&hash=e5f6g7h8">Peticao_Inicial.pdf</a>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

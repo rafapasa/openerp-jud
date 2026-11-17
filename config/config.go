@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -39,28 +40,44 @@ type Config struct {
 }
 
 // LoadConfig carrega as configurações a partir de variáveis de ambiente com defaults seguros.
-func LoadConfig() *Config {
+func LoadConfig() (*Config, error) {
 	transport := getEnv("MCP_TRANSPORT", "stdio")
+	if transport != "stdio" && transport != "sse" {
+		return nil, fmt.Errorf("MCP_TRANSPORT inválido: %q (esperado 'stdio' ou 'sse')", transport)
+	}
+
 	port := getEnv("PORT", "8080")
+	if transport == "sse" {
+		if _, err := strconv.Atoi(port); err != nil {
+			return nil, fmt.Errorf("PORT inválido: %q", port)
+		}
+	}
+
 	certPath := getEnv("CERT_PATH", filepath.Join("certs", "advogado.pfx"))
 	certPassword := getEnv("CERT_PASSWORD", "")
 	downloadsDir := getEnv("DOWNLOADS_DIR", filepath.Join("tmp", "downloads"))
 
 	headless := true
 	if v := os.Getenv("BROWSER_HEADLESS"); v != "" {
-		if b, err := strconv.ParseBool(v); err == nil {
-			headless = b
+		b, err := strconv.ParseBool(v)
+		if err != nil {
+			return nil, fmt.Errorf("BROWSER_HEADLESS inválido: %q", v)
 		}
+		headless = b
 	}
 
 	timeoutSec := 45
 	if v := os.Getenv("BROWSER_TIMEOUT_SEC"); v != "" {
-		if s, err := strconv.Atoi(v); err == nil && s > 0 {
-			timeoutSec = s
+		s, err := strconv.Atoi(v)
+		if err != nil || s <= 0 {
+			return nil, fmt.Errorf("BROWSER_TIMEOUT_SEC inválido: %q", v)
 		}
+		timeoutSec = s
 	}
 
 	return &Config{
+		Environment:    getEnv("ENVIRONMENT", "development"),
+		TimeZone:       getEnv("TIME_ZONE", "America/Sao_Paulo"),
 		Transport:      transport,
 		Port:           port,
 		CertPath:       certPath,
@@ -68,7 +85,11 @@ func LoadConfig() *Config {
 		Headless:       headless,
 		BrowserTimeout: time.Duration(timeoutSec) * time.Second,
 		DownloadsDir:   downloadsDir,
-	}
+		LogLevel:       getEnv("LOG_LEVEL", "info"),
+		LogEncoding:    getEnv("LOG_ENCODING", "json"),
+		LogOutput:      getEnv("LOG_OUTPUT", "stdout"),
+		LogFile:        getEnv("LOG_FILE", filepath.Join("logs", "mcp-server.log")),
+	}, nil
 }
 
 func getEnv(key, defaultVal string) string {
@@ -77,6 +98,8 @@ func getEnv(key, defaultVal string) string {
 	}
 	return defaultVal
 }
+
+// IsProduction indica se o ambiente é de produção.
 func (c *Config) IsProduction() bool {
 	env := strings.ToLower(strings.TrimSpace(c.Environment))
 	if env == "" {

@@ -10,25 +10,25 @@ import (
 	"github.com/rafapasa/openerp-jud/internal/tribunal"
 )
 
-// DefaultToolHandler implementa a interface ToolHandler delegando as operações
+// defaultToolHandler implementa a interface ToolHandler delegando as operações
 // para os drivers judiciais apropriados via Registry.
-type DefaultToolHandler struct {
+type defaultToolHandler struct {
 	cfg      *config.Config
 	registry tribunal.Registry
 }
 
-var _ ToolHandler = (*DefaultToolHandler)(nil)
+var _ ToolHandler = (*defaultToolHandler)(nil)
 
-// NewToolHandler cria uma nova instância de DefaultToolHandler.
-func NewToolHandler(cfg *config.Config, registry tribunal.Registry) *DefaultToolHandler {
-	return &DefaultToolHandler{
+// NewToolHandler cria uma nova instância de ToolHandler.
+func NewToolHandler(cfg *config.Config, registry tribunal.Registry) ToolHandler {
+	return &defaultToolHandler{
 		cfg:      cfg,
 		registry: registry,
 	}
 }
 
 // HandleConsultarProcessosCPF consulta processos por CPF no(s) tribunal(is) especificado(s).
-func (h *DefaultToolHandler) HandleConsultarProcessosCPF(ctx context.Context, cpf string, trib model.Tribunal) ([]model.Processo, error) {
+func (h *defaultToolHandler) HandleConsultarProcessosCPF(ctx context.Context, cpf string, trib model.Tribunal) ([]model.Processo, error) {
 	if cpf == "" {
 		return nil, fmt.Errorf("cpf obrigatório para consulta")
 	}
@@ -86,7 +86,7 @@ func (h *DefaultToolHandler) HandleConsultarProcessosCPF(ctx context.Context, cp
 }
 
 // HandleObterDetalhesProcesso recupera capa e andamentos de um processo pelo número CNJ.
-func (h *DefaultToolHandler) HandleObterDetalhesProcesso(ctx context.Context, numeroProcesso string, trib model.Tribunal) (*model.Processo, error) {
+func (h *defaultToolHandler) HandleObterDetalhesProcesso(ctx context.Context, numeroProcesso string, trib model.Tribunal) (*model.Processo, error) {
 	if numeroProcesso == "" {
 		return nil, fmt.Errorf("numero do processo obrigatório")
 	}
@@ -100,7 +100,7 @@ func (h *DefaultToolHandler) HandleObterDetalhesProcesso(ctx context.Context, nu
 }
 
 // HandleBaixarPeca gerencia o download de uma peça judicial.
-func (h *DefaultToolHandler) HandleBaixarPeca(ctx context.Context, trib model.Tribunal, numeroProcesso, docID string) (string, error) {
+func (h *defaultToolHandler) HandleBaixarPeca(ctx context.Context, trib model.Tribunal, numeroProcesso, docID string) (string, error) {
 	if docID == "" {
 		return "", fmt.Errorf("id do documento obrigatório")
 	}

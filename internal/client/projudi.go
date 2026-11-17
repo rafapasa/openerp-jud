@@ -15,30 +15,27 @@ const (
 	TJPRLogin   = "https://projudi.tjpr.jus.br/projudi/usuario/loginCertificado.do"
 )
 
-// Client implementa o driver de automação do Projudi TJPR.
-type ProjudiClient struct {
+// projudiClient implementa o driver de automação do Projudi TJPR.
+type projudiClient struct {
 	cfg            *config.Config
 	browserManager browser.ContextManager
 }
 
-// var _ Service = (*ProjudiClient)(nil)
-var _ tribunal.Driver = (*ProjudiClient)(nil)
-
-// NewClient cria uma nova instância do driver do Projudi TJPR.
-func NewProjudiClient(cfg *config.Config, bm browser.ContextManager) *ProjudiClient {
-	return &ProjudiClient{
+// NewProjudiClient cria uma nova instância do driver do Projudi TJPR.
+func NewProjudiClient(cfg *config.Config, bm browser.ContextManager) tribunal.ProjudiClient {
+	return &projudiClient{
 		cfg:            cfg,
 		browserManager: bm,
 	}
 }
 
 // Tribunal retorna o identificador do tribunal atendido.
-func (c *ProjudiClient) Tribunal() model.Tribunal {
+func (c *projudiClient) Tribunal() model.Tribunal {
 	return model.TribunalTJPR
 }
 
 // ConsultarPorCPF consulta processos vinculados ao CPF no Projudi TJPR.
-func (c *ProjudiClient) ConsultarPorCPF(ctx context.Context, cpf string) ([]model.Processo, error) {
+func (c *projudiClient) ConsultarPorCPF(ctx context.Context, cpf string) ([]model.Processo, error) {
 	bCtx, err := c.browserManager.NewContext(TJPRBaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("projudi tjpr: erro ao criar contexto: %w", err)
@@ -56,7 +53,7 @@ func (c *ProjudiClient) ConsultarPorCPF(ctx context.Context, cpf string) ([]mode
 }
 
 // ObterProcesso busca detalhes completos de um processo pelo número único CNJ.
-func (c *ProjudiClient) ObterProcesso(ctx context.Context, numeroCNJ string) (*model.Processo, error) {
+func (c *projudiClient) ObterProcesso(ctx context.Context, numeroCNJ string) (*model.Processo, error) {
 	bCtx, err := c.browserManager.NewContext(TJPRBaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("projudi tjpr: erro ao criar contexto: %w", err)
@@ -71,7 +68,7 @@ func (c *ProjudiClient) ObterProcesso(ctx context.Context, numeroCNJ string) (*m
 }
 
 // BaixarPeca realiza o download de uma peça/documento específico do Projudi.
-func (c *ProjudiClient) BaixarPeca(ctx context.Context, numeroCNJ, docID, destino string) (string, error) {
+func (c *projudiClient) BaixarPeca(ctx context.Context, numeroCNJ, docID, destino string) (string, error) {
 	bCtx, err := c.browserManager.NewContext(TJPRBaseURL)
 	if err != nil {
 		return "", fmt.Errorf("projudi tjpr: erro ao criar contexto: %w", err)

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="ISO-8859-1"><title>eproc - Consulta Processual</title></head>
+<body>
+  <div id="divInfraAreaTelaD">
+    <!-- CAPA DO PROCESSO -->
+    <fieldset id="fldCapa" class="infraFieldset">
+      <legend class="infraLegendObrigatorio">Capa do Processo</legend>
+      <table id="tblCapa" class="infraTable">
+        <tr>
+          <td class="infraTdLabel">Processo:</td>
+          <td id="txtNumProcesso">5001234-56.2025.4.04.7200</td>
+          <td class="infraTdLabel">Data de Autuação:</td>
+          <td id="txtAutuacao">15/02/2025 14:30:00</td>
+        </tr>
+        <tr>
+          <td class="infraTdLabel">Classe da Ação:</td>
+          <td id="txtClasse">PROCEDIMENTO COMUM CÍVEL</td>
+          <td class="infraTdLabel">Situação:</td>
+          <td id="txtSituacao">MOVIMENTO</td>
+        </tr>
+        <tr>
+          <td class="infraTdLabel">Órgão Julgador:</td>
+          <td id="txtOrgaoJulgador">1ª Vara Federal de Florianópolis</td>
+          <td class="infraTdLabel">Juiz(a):</td>
+          <td id="txtMagistrado">NOME DO MAGISTRADO</td>
+        </tr>
+        <tr>
+          <td class="infraTdLabel">Valor da Causa:</td>
+          <td id="txtValorCausa">R$ 50.000,00</td>
+          <td class="infraTdLabel">Segredo de Justiça:</td>
+          <td id="txtSegredo">Não</td>
+        </tr>
+      </table>
+    </fieldset>
+
+    <!-- PARTES E REPRESENTANTES -->
+    <fieldset id="fldPartes" class="infraFieldset">
+      <legend class="infraLegendObrigatorio">Partes e Representantes</legend>
+      <table id="tblPartes" class="infraTable">
+        <thead>
+          <tr>
+            <th>Autor</th>
+            <th>Réu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="infraNomeParte">JOÃO DA SILVA</span> (000.000.000-00)<br>
+              <span class="infraAdvogado">Advogado: DR. FULANO DE TAL (SC012345)</span>
+            </td>
+            <td>
+              <span class="infraNomeParte">INSTITUTO NACIONAL DO SEGURO SOCIAL - INSS</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </fieldset>
+
+    <!-- EVENTOS / MOVIMENTAÇÕES -->
+    <fieldset id="fldEventos" class="infraFieldset">
+      <legend class="infraLegendObrigatorio">Eventos</legend>
+      <table id="tblEventos" class="infraTable">
+        <thead>
+          <tr>
+            <th>Evento</th>
+            <th>Data/Hora</th>
+            <th>Descrição</th>
+            <th>Usuário</th>
+            <th>Documentos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="trEvento2" class="infraTrClara">
+            <td>2</td>
+            <td>20/02/2025 16:10:00</td>
+            <td>
+              <label class="infraEventoDescricao">Despacho/Decisão - Deferida a Tutela</label>
+            </td>
+            <td>MAGISTRADO</td>
+            <td>
+              <a class="infraLinkDocumento" href="controlador.php?acao=acessar_documento&doc=123456&hash=abc123def">
+                DESPADEC1
+              </a>
+            </td>
+          </tr>
+          <tr id="trEvento1" class="infraTrEscura">
+            <td>1</td>
+            <td>15/02/2025 14:30:00</td>
+            <td>
+              <label class="infraEventoDescricao">Distribuição por Sorteio</label>
+            </td>
+            <td>SISTEMA</td>
+            <td>
+              <a class="infraLinkDocumento" href="controlador.php?acao=acessar_documento&doc=123455&hash=xyz987uvw">
+                INIC1
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </fieldset>
+  </div>
+</body>
+</html>

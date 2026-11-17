@@ -1,0 +1,47 @@
+# ================================================================
+# Stage base — dependências Go (ambiente de teste)
+# ================================================================
+FROM golang:1.27.1-bookworm AS base
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+
+# ================================================================
+# Target: server-builder
+# ================================================================
+FROM base AS server-builder
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags="-s -w" -o /bin/openerp-jud .
+
+# ================================================================
+# Target: server (teste) — mesma base do prod, log mais verboso
+# Sem SGBD. Porta padrão distinta no compose (8083).
+# ================================================================
+FROM golang:1.27.1-bookworm AS server
+WORKDIR /app
+
+RUN go run github.com/mxschmitt/playwright-go/cmd/playwright@v0.6401.0 install --with-deps chromium \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=server-builder /bin/openerp-jud /app/openerp-jud
+
+RUN mkdir -p /app/tmp/downloads /app/logs /app/certs \
+    && chmod 755 /app/tmp/downloads /app/logs /app/certs
+
+ENV ENVIRONMENT=development \
+    MCP_TRANSPORT=sse \
+    PORT=8080 \
+    BROWSER_HEADLESS=true \
+    BROWSER_TIMEOUT_SEC=45 \
+    CERT_PATH=/app/certs/advogado.pfx \
+    DOWNLOADS_DIR=/app/tmp/downloads \
+    LOG_LEVEL=debug \
+    LOG_ENCODING=console \
+    LOG_OUTPUT=stdout \
+    TIME_ZONE=America/Sao_Paulo
+
+EXPOSE 8080
+
+CMD ["/app/openerp-jud"]
